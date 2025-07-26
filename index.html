@@ -493,18 +493,20 @@
         
         function updateChartStyles(isDarkMode) {
             const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-            const textColor = isDarkMode ? '#e2e8f0' : '#334155';
+            const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
             
             Chart.defaults.color = textColor;
             Chart.defaults.borderColor = gridColor;
 
             Object.values(charts).forEach(chart => {
                 if(chart) {
-                    chart.options.scales.x.ticks.color = textColor;
-                    chart.options.scales.x.grid.color = gridColor;
-                    chart.options.scales.y.ticks.color = textColor;
-                    chart.options.scales.y.grid.color = gridColor;
-                    if(chart.options.plugins.legend) {
+                    if (chart.options.scales && chart.options.scales.x && chart.options.scales.y) {
+                        chart.options.scales.x.ticks.color = textColor;
+                        chart.options.scales.x.grid.color = gridColor;
+                        chart.options.scales.y.ticks.color = textColor;
+                        chart.options.scales.y.grid.color = gridColor;
+                    }
+                    if(chart.options.plugins && chart.options.plugins.legend) {
                         chart.options.plugins.legend.labels.color = textColor;
                     }
                     chart.update();
