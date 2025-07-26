@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Mixxx DJ Controller Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Slate, Stone, Amber) -->
+    <!-- Application Structure Plan: A dashboard-style layout was chosen for its clarity and efficiency. The structure includes a header for context, a persistent sidebar for primary filtering and search controls, and a main content area. The main area is split into two sections: a top row of interactive charts for high-level data visualization and a dynamic grid of controller cards below for detailed exploration. This structure facilitates a natural user flow: users can get an overview from the charts, then use the filters or click the charts to drill down into the specific controller data presented in the cards. This is more intuitive and engaging than a simple table, especially for comparing products. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Manufacturer distribution -> Goal: Compare -> Viz: Bar Chart -> Interaction: Click bar to filter controllers -> Justification: Quickly shows market share and allows for brand-specific exploration. Library: Chart.js.
+        - Report Info: Controllers released over time -> Goal: Show Change -> Viz: Line Chart -> Interaction: Hover for details -> Justification: Visualizes the growth and evolution of controller technology. Library: Chart.js.
+        - Report Info: Key feature prevalence (All-in-one, Jog Wheels, Sync) -> Goal: Inform/Compare -> Viz: Donut Charts -> Interaction: Click segment to filter -> Justification: Provides a quick, digestible summary of common hardware configurations. Library: Chart.js.
+        - Report Info: Full controller data -> Goal: Organize/Inform -> Presentation: Interactive Card Grid -> Interaction: Filter/Sort/Search -> Justification: Cards are more readable and responsive than a wide table, allowing for easy comparison of individual products. Method: HTML/CSS/JS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            max-height: 300px;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; /* slate-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; /* slate-300 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; /* slate-400 */
+        }
+        html.dark ::-webkit-scrollbar-track {
+            background: #1e293b; /* slate-800 */
+        }
+        html.dark ::-webkit-scrollbar-thumb {
+            background: #475569; /* slate-600 */
+        }
+        html.dark ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* slate-500 */
+        }
+        .filter-section-toggle {
+            cursor: pointer;
+        }
+        .filter-section-toggle .arrow {
+            transition: transform 0.2s ease-in-out;
+        }
+        .filter-section.closed .arrow {
+            transform: rotate(-90deg);
+        }
+        .slider-container {
+            position: relative;
+            height: 20px;
+            margin-top: 1rem;
+        }
+        .slider-track {
+            position: absolute;
+            height: 4px;
+            background-color: #e2e8f0; /* slate-200 */
+            width: 100%;
+            top: 8px;
+            border-radius: 2px;
+        }
+        html.dark .slider-track {
+             background-color: #334155; /* slate-700 */
+        }
+        .slider-range {
+            position: absolute;
+            height: 4px;
+            background-color: #f59e0b; /* amber-500 */
+            top: 8px;
+            border-radius: 2px;
+        }
+        .range-slider {
+            position: absolute;
+            width: 100%;
+            pointer-events: none;
+            -webkit-appearance: none;
+            background: transparent;
+            height: 20px;
+        }
+        .range-slider::-webkit-slider-thumb {
+            pointer-events: all;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #f59e0b;
+            cursor: pointer;
+            -webkit-appearance: none;
+            border: 2px solid white;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+        }
+        html.dark .range-slider::-webkit-slider-thumb {
+            border-color: #334155; /* slate-700 */
+        }
+        .range-slider::-moz-range-thumb {
+             pointer-events: all;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #f59e0b;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+        }
+        html.dark .range-slider::-moz-range-thumb {
+            border-color: #334155; /* slate-700 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+
+    <div class="flex flex-col lg:flex-row min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-full lg:w-80 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 p-6 flex-shrink-0">
+            <div class="space-y-8 sticky top-6">
+                <header>
+                    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Controller Explorer</h1>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Interactive guide to Mixxx-compatible DJ controllers.</p>
+                </header>
+
+                <!-- Search -->
+                <div>
+                    <label for="search" class="text-sm font-semibold text-slate-700 dark:text-slate-300">Search by Model</label>
+                    <input type="text" id="search" placeholder="e.g., DDJ-400" class="mt-2 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 transition dark:text-white dark:placeholder-slate-400">
+                </div>
+                
+                <!-- Filters -->
+                <div class="space-y-6">
+                    <!-- Manufacturer Filter -->
+                    <div class="filter-section">
+                        <div class="filter-section-toggle flex justify-between items-center">
+                            <label for="manufacturer" class="font-semibold text-slate-700 dark:text-slate-300">Manufacturer</label>
+                            <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span>
+                        </div>
+                        <select id="manufacturer" class="mt-2 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 transition dark:text-white">
+                            <option value="all">All Manufacturers</option>
+                        </select>
+                    </div>
+
+                    <!-- Feature Filters -->
+                    <div class="filter-section">
+                        <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Features <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
+                        <div class="mt-2 space-y-4">
+                            <div class="space-y-2">
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" id="filter-allinone" class="feature-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700">
+                                    <span>All-in-one</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" id="filter-jogwheels" class="feature-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700">
+                                    <span>Has Jog Wheels</span>
+                                </label>
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" id="filter-sync" class="feature-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700">
+                                    <span>Has Sync Button</span>
+                                </label>
+                            </div>
+                            <!-- Jog Wheel Diameter Slider -->
+                            <div id="jog-wheel-slider-container" class="space-y-2 pt-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <label class="font-medium text-slate-600 dark:text-slate-400">Jog Wheel Ø (mm)</label>
+                                    <span id="jog-wheel-range-display" class="font-mono text-slate-500 dark:text-slate-400"></span>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-track"></div>
+                                    <div id="slider-range-color" class="slider-range"></div>
+                                    <input type="range" id="min-jog-wheel" class="range-slider">
+                                    <input type="range" id="max-jog-wheel" class="range-slider">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Support Level Filter -->
+                    <div class="filter-section">
+                         <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Support Level <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
+                        <div class="mt-2 space-y-2">
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" id="filter-certified" class="support-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700" value="Mixxx Certified">
+                                <span>Mixxx Certified</span>
+                            </label>
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="checkbox" id="filter-community" class="support-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700" value="Community Supported">
+                                <span>Community Supported</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Sorting -->
+                    <div class="filter-section">
+                        <div class="filter-section-toggle flex justify-between items-center">
+                           <label for="sort" class="font-semibold text-slate-700 dark:text-slate-300">Sort By</label>
+                           <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span>
+                        </div>
+                        <select id="sort" class="mt-2 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 transition dark:text-white">
+                            <option value="manufacturer-asc">Manufacturer (A-Z)</option>
+                            <option value="year-desc">Year of Release (Newest)</option>
+                            <option value="year-asc">Year of Release (Oldest)</option>
+                            <option value="jogwheel-desc">Jog Wheel Size (Largest)</option>
+                            <option value="jogwheel-asc">Jog Wheel Size (Smallest)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="reset-filters" class="w-full py-2 px-4 bg-amber-600 text-white font-semibold rounded-md hover:bg-amber-700 transition-colors">Reset All Filters</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 lg:p-8 relative">
+            <!-- Dark Mode Toggle -->
+            <div class="absolute top-6 right-6">
+                <label for="theme-toggle" class="flex items-center cursor-pointer">
+                    <div class="relative">
+                        <input type="checkbox" id="theme-toggle" class="sr-only">
+                        <div class="block bg-slate-200 dark:bg-slate-700 w-14 h-8 rounded-full"></div>
+                        <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform dark:translate-x-6"></div>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Charts Section -->
+            <section id="charts-section">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Market Overview</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">These charts provide a high-level look at the DJ controllers compatible with Mixxx. Click on any chart segment to instantly filter the controller list below and explore the data interactively.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700 col-span-1 md:col-span-2">
+                        <h3 class="font-semibold text-center mb-2">Controllers by Manufacturer</h3>
+                        <div class="chart-container">
+                            <canvas id="manufacturerChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700 col-span-1 md:col-span-2">
+                        <h3 class="font-semibold text-center mb-2">Controllers Released Per Year</h3>
+                        <div class="chart-container">
+                            <canvas id="yearChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-semibold text-center mb-2">All-in-one Units</h3>
+                        <div class="chart-container">
+                            <canvas id="allInOneChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-semibold text-center mb-2">Jog Wheel Presence</h3>
+                        <div class="chart-container">
+                            <canvas id="jogWheelsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <h3 class="font-semibold text-center mb-2">Sync Button Presence</h3>
+                        <div class="chart-container">
+                            <canvas id="syncChart"></canvas>
+                        </div>
+                    </div>
+                     <div class="bg-white dark:bg-slate-800 p-6 rounded-lg border border-slate-200 dark:border-slate-700 flex flex-col justify-center items-center">
+                        <h3 class="font-semibold text-center mb-2">Total Controllers</h3>
+                        <p id="total-controllers" class="text-6xl font-bold text-amber-600"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Controllers Grid -->
+            <section id="controllers-grid">
+                 <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Controller Database</h2>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Here you can find detailed information for each controller. Use the filters on the left to narrow your search and find the perfect hardware for your setup.</p>
+                </div>
+                <div id="grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+                    <!-- Controller cards will be injected here -->
+                </div>
+                <div id="no-results" class="hidden text-center py-16">
+                    <p class="text-xl font-semibold text-slate-700 dark:text-slate-300">No controllers match your criteria.</p>
+                    <p class="text-slate-500 dark:text-slate-400 mt-2">Try adjusting your filters.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const controllerData = [
+            { manufacturer: "Akai", model: "LPD8", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "No", dimensions: "311 x 81", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Akai", model: "MPD24", supportLevel: "Community Supported", year: 2007, allInOne: "No", sync: "No", dimensions: "315 x 264", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Allen & Heath", model: "Xone:K1", supportLevel: "Mixxx Certified", year: 2014, allInOne: "No", sync: "No", dimensions: "135 x 358", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Allen & Heath", model: "Xone:K2", supportLevel: "Mixxx Certified", year: 2012, allInOne: "No", sync: "No", dimensions: "135 x 358", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "American Audio", model: "Radius 1000 / 2000 / 3000", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "265 x 356", jogWheels: "Yes", jogWheelDiameter: 135 },
+            { manufacturer: "American Audio", model: "VMS2", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "360 x 290", jogWheels: "Yes", jogWheelDiameter: 115 },
+            { manufacturer: "American Audio", model: "VMS4 / 4.1", supportLevel: "Mixxx Certified", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "482 x 325", jogWheels: "Yes", jogWheelDiameter: 115 },
+            { manufacturer: "Behringer", model: "BCD2000", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "Yes", dimensions: "330 x 300", jogWheels: "Yes", jogWheelDiameter: 110 },
+            { manufacturer: "Behringer", model: "BCD3000", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "330 x 300", jogWheels: "Yes", jogWheelDiameter: 110 },
+            { manufacturer: "Behringer", model: "BCR2000", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "300 x 210", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Behringer", model: "CMD Micro", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "305 x 102", jogWheels: "Yes", jogWheelDiameter: 60 },
+            { manufacturer: "Behringer", model: "CMD MM-1", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "305 x 152", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Behringer", model: "CMD STUDIO 4a", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "502 x 308", jogWheels: "Yes", jogWheelDiameter: 152 },
+            { manufacturer: "Behringer", model: "DDM4000", supportLevel: "Community Supported", year: 2007, allInOne: "No", sync: "No", dimensions: "320 x 391", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Denon DJ", model: "DN-HS5500", supportLevel: "Mixxx Certified", year: 2008, allInOne: "No", sync: "Yes", dimensions: "300 x 324", jogWheels: "Yes", jogWheelDiameter: 190 },
+            { manufacturer: "Denon DJ", model: "DN-SC2000", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "250 x 215", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Denon DJ", model: "MC3000", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "460 x 255", jogWheels: "Yes", jogWheelDiameter: 105 },
+            { manufacturer: "Denon DJ", model: "MC4000", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "505 x 297", jogWheels: "Yes", jogWheelDiameter: 130 },
+            { manufacturer: "Denon DJ", model: "MC6000MK2", supportLevel: "Mixxx Certified", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "460 x 283", jogWheels: "Yes", jogWheelDiameter: 105 },
+            { manufacturer: "Denon DJ", model: "MC7000", supportLevel: "Community Supported", year: 2017, allInOne: "Yes", sync: "Yes", dimensions: "667 x 378", jogWheels: "Yes", jogWheelDiameter: 150 },
+            { manufacturer: "DJ Tech", model: "CDJ 101", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "Yes", dimensions: "216 x 216", jogWheels: "Yes", jogWheelDiameter: 110 },
+            { manufacturer: "DJ Tech", model: "DJM 101", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "152 x 216", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "DJ Tech", model: "iMix Reload", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "360 x 255", jogWheels: "Yes", jogWheelDiameter: 130 },
+            { manufacturer: "DJ Tech", model: "Kontrol One", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "150 x 300", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "DJ Tech", model: "MIX-101", supportLevel: "Community Supported", year: "Not available", allInOne: "No", sync: "No", dimensions: "Not available", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "DJ Tech", model: "Mixer One", supportLevel: "Community Supported", year: "Not available", allInOne: "No", sync: "No", dimensions: "Not available", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "DJ TechTools", model: "MIDI Fighter Classic", supportLevel: "Mixxx Certified", year: 2011, allInOne: "No", sync: "No", dimensions: "152 x 152", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "DJ TechTools", model: "MIDI Fighter Spectra", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "152 x 152", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "DJ TechTools", model: "MIDI Fighter Twister", supportLevel: "Community Supported", year: 2015, allInOne: "No", sync: "No", dimensions: "152 x 152", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "EKS", model: "Otus", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "335 x 335", jogWheels: "Yes", jogWheelDiameter: "~200" },
+            { manufacturer: "Electrix", model: "Tweaker", supportLevel: "Community Supported", year: 2012, allInOne: "No", sync: "No", dimensions: "280 x 140", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Evolution", model: "X-Session", supportLevel: "Community Supported", year: 2004, allInOne: "No", sync: "No", dimensions: "254 x 140", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "FaderFox", model: "DJ2", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "180 x 105", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Gemini", model: "CDMP-7000", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "720 x 315", jogWheels: "Yes", jogWheelDiameter: 206 },
+            { manufacturer: "Gemini", model: "FirstMix", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "360 x 133", jogWheels: "Yes", jogWheelDiameter: 80 },
+            { manufacturer: "Hercules", model: "DJ Console 4-Mx", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "400 x 250", jogWheels: "Yes", jogWheelDiameter: 120 },
+            { manufacturer: "Hercules", model: "DJ Console (Mac Edition)", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "Yes", dimensions: "Not available", jogWheels: "Yes", jogWheelDiameter: 75 },
+            { manufacturer: "Hercules", model: "DJ Console MK1", supportLevel: "Community Supported", year: 2004, allInOne: "Yes", sync: "No", dimensions: "235 x 200", jogWheels: "Yes", jogWheelDiameter: 75 },
+            { manufacturer: "Hercules", model: "DJ Console MK2", supportLevel: "Mixxx Certified", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "235 x 200", jogWheels: "Yes", jogWheelDiameter: 75 },
+            { manufacturer: "Hercules", model: "DJ Console MK4", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75 },
+            { manufacturer: "Hercules", model: "DJ Console RMX", supportLevel: "Mixxx Certified", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "350 x 250", jogWheels: "Yes", jogWheelDiameter: 100 },
+            { manufacturer: "Hercules", model: "DJ Console RMX2", supportLevel: "Mixxx Certified", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "350 x 250", jogWheels: "Yes", jogWheelDiameter: 100 },
+            { manufacturer: "Hercules", model: "DJControl AIR", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "350 x 220", jogWheels: "Yes", jogWheelDiameter: 100 },
+            { manufacturer: "Hercules", model: "DJControl Compact", supportLevel: "Mixxx Certified", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "340 x 100", jogWheels: "Yes", jogWheelDiameter: 75 },
+            { manufacturer: "Hercules", model: "DJControl Inpulse 200", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "320 x 195", jogWheels: "Yes", jogWheelDiameter: 90 },
+            { manufacturer: "Hercules", model: "DJControl Inpulse 300", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "480 x 286", jogWheels: "Yes", jogWheelDiameter: 150 },
+            { manufacturer: "Hercules", model: "DJControl Inpulse 500", supportLevel: "Community Supported", year: 2020, allInOne: "Yes", sync: "Yes", dimensions: "542 x 296", jogWheels: "Yes", jogWheelDiameter: 140 },
+            { manufacturer: "Hercules", model: "DJControl Instinct (S)", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75 },
+            { manufacturer: "Hercules", model: "DJControl Jogvision", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "455 x 254", jogWheels: "Yes", jogWheelDiameter: 150 },
+            { manufacturer: "Hercules", model: "DJControl MIX", supportLevel: "Community Supported", year: 2021, allInOne: "Yes", sync: "Yes", dimensions: "340 x 100", jogWheels: "Yes", jogWheelDiameter: 55 },
+            { manufacturer: "Hercules", model: "DJControl MP3", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75 },
+            { manufacturer: "Hercules", model: "DJControl MP3 e2 / MP3 LE / Glow", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75 },
+            { manufacturer: "Hercules", model: "DJControl Starlight", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "340 x 100", jogWheels: "Yes", jogWheelDiameter: 89 },
+            { manufacturer: "Hercules", model: "P32 DJ", supportLevel: "Mixxx Certified", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "353 x 238", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "ION", model: "Discover DJ", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "451 x 203", jogWheels: "Yes", jogWheelDiameter: "Not available" },
+            { manufacturer: "ION", model: "Discover DJ Pro", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "Not available", jogWheels: "Yes", jogWheelDiameter: "Not available" },
+            { manufacturer: "Keith McMillen", model: "QuNeo", supportLevel: "Community Supported", year: 2012, allInOne: "No", sync: "No", dimensions: "241 x 184", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Kontrol DJ", model: "KDJ500", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "218 x 197", jogWheels: "Yes", jogWheelDiameter: "Not available" },
+            { manufacturer: "Korg", model: "Kaoss DJ controller", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "280 x 216", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Korg", model: "nanoKONTROL", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "320 x 82", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Korg", model: "nanoKONTROL2", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "325 x 83", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Korg", model: "nanoPAD2", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "325 x 83", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "M-Audio", model: "X-Session Pro", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "262 x 165", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "M-Audio", model: "Torq Xponent", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "406 x 292", jogWheels: "Yes", jogWheelDiameter: 110 },
+            { manufacturer: "Miditech", model: "Midicontrol", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "No", dimensions: "345 x 97", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Mixman", model: "DM2", supportLevel: "Community Supported", year: 2002, allInOne: "No", sync: "No", dimensions: "229 x 178", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "MixVibes", model: "U-Mix Control (Pro) 2", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "360 x 200", jogWheels: "Yes", jogWheelDiameter: 100 },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol F1", supportLevel: "Community Supported", year: 2012, allInOne: "No", sync: "No", dimensions: "120 x 294", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S2 MK1", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "438 x 308", jogWheels: "Yes", jogWheelDiameter: 115 },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S2 MK2", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "438 x 308", jogWheels: "Yes", jogWheelDiameter: 115 },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S2 MK3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "486 x 265", jogWheels: "Yes", jogWheelDiameter: 140 },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S3", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "544 x 303", jogWheels: "Yes", jogWheelDiameter: 140 },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S4 MK2", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "500 x 338", jogWheels: "Yes", jogWheelDiameter: 115 },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S4 MK3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "542 x 339", jogWheels: "Yes", jogWheelDiameter: 140 },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol X1", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "No", dimensions: "120 x 294", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol Z1", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "120 x 294", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Nintendo", model: "Wiimote", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "38 x 148", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Novation", model: "Dicer", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "No", dimensions: "90 x 90", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Novation", model: "Launchpad Mini", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "185 x 185", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Novation", model: "Launchpad MK1", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "No", dimensions: "240 x 240", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Novation", model: "Launchpad MK2", supportLevel: "Community Supported", year: 2015, allInOne: "No", sync: "No", dimensions: "240 x 240", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Novation", model: "Twitch", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "356 x 267", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Numark", model: "DJ2GO", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "297 x 84", jogWheels: "Yes", jogWheelDiameter: 70 },
+            { manufacturer: "Numark", model: "DJ2GO2 Touch", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "314 x 86", jogWheels: "Yes", jogWheelDiameter: 70 },
+            { manufacturer: "Numark", model: "iDJ Live II", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "420 x 193", jogWheels: "Yes", jogWheelDiameter: 130 },
+            { manufacturer: "Numark", model: "Mixtrack", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "476 x 298", jogWheels: "Yes", jogWheelDiameter: 130 },
+            { manufacturer: "Numark", model: "Mixtrack Platinum", supportLevel: "Community Supported", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "549 x 231", jogWheels: "Yes", jogWheelDiameter: 140 },
+            { manufacturer: "Numark", model: "Mixtrack Platinum FX", supportLevel: "Community Supported", year: 2020, allInOne: "Yes", sync: "Yes", dimensions: "536 x 246", jogWheels: "Yes", jogWheelDiameter: 140 },
+            { manufacturer: "Numark", model: "Mixtrack Pro", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "476 x 298", jogWheels: "Yes", jogWheelDiameter: 130 },
+            { manufacturer: "Numark", model: "Mixtrack (Pro) 3", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "550 x 232", jogWheels: "Yes", jogWheelDiameter: 128 },
+            { manufacturer: "Numark", model: "Mixtrack Pro FX", supportLevel: "Community Supported", year: 2020, allInOne: "Yes", sync: "Yes", dimensions: "536 x 246", jogWheels: "Yes", jogWheelDiameter: 140 },
+            { manufacturer: "Numark", model: "Mixtrack Pro II", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "464 x 264", jogWheels: "Yes", jogWheelDiameter: 130 },
+            { manufacturer: "Numark", model: "N4", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "572 x 305", jogWheels: "Yes", jogWheelDiameter: 150 },
+            { manufacturer: "Numark", model: "NS6II", supportLevel: "Community Supported", year: 2017, allInOne: "Yes", sync: "Yes", dimensions: "560 x 360", jogWheels: "Yes", jogWheelDiameter: 133 },
+            { manufacturer: "Numark", model: "NS7", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "762 x 399", jogWheels: "Yes", jogWheelDiameter: 178 },
+            { manufacturer: "Numark", model: "Omni Control", supportLevel: "Community Supported", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "356 x 267", jogWheels: "Yes", jogWheelDiameter: 110 },
+            { manufacturer: "Numark", model: "Party Mix", supportLevel: "Community Supported", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "326 x 199", jogWheels: "Yes", jogWheelDiameter: 100 },
+            { manufacturer: "Numark", model: "Scratch", supportLevel: "Community Supported", year: 2018, allInOne: "No", sync: "No", dimensions: "242 x 308", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Numark", model: "Total Control", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "305 x 267", jogWheels: "Yes", jogWheelDiameter: 110 },
+            { manufacturer: "Numark", model: "V7", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "305 x 368", jogWheels: "Yes", jogWheelDiameter: 178 },
+            { manufacturer: "Pioneer DJ", model: "CDJ-2000", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "Yes", dimensions: "320 x 406", jogWheels: "Yes", jogWheelDiameter: 206 },
+            { manufacturer: "Pioneer DJ", model: "CDJ-350", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "220 x 289", jogWheels: "Yes", jogWheelDiameter: 132 },
+            { manufacturer: "Pioneer DJ", model: "CDJ-850", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "305 x 364", jogWheels: "Yes", jogWheelDiameter: 206 },
+            { manufacturer: "Pioneer DJ", model: "DDJ-200", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "378 x 208", jogWheels: "Yes", jogWheelDiameter: 132 },
+            { manufacturer: "Pioneer DJ", model: "DDJ-400", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "482 x 272", jogWheels: "Yes", jogWheelDiameter: 132 },
+            { manufacturer: "Pioneer DJ", model: "DDJ-FLX4", supportLevel: "Community Supported", year: 2022, allInOne: "Yes", sync: "Yes", dimensions: "482 x 273", jogWheels: "Yes", jogWheelDiameter: 132 },
+            { manufacturer: "Pioneer DJ", model: "DDJ-SB", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "487 x 271", jogWheels: "Yes", jogWheelDiameter: 128 },
+            { manufacturer: "Pioneer DJ", model: "DDJ-SB2", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "487 x 271", jogWheels: "Yes", jogWheelDiameter: 128 },
+            { manufacturer: "Pioneer DJ", model: "DDJ-SB3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "483 x 272", jogWheels: "Yes", jogWheelDiameter: 128 },
+            { manufacturer: "Pioneer DJ", model: "DDJ-SX", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "664 x 357", jogWheels: "Yes", jogWheelDiameter: 132 },
+            { manufacturer: "Reloop", model: "Beatmix 2", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "492 x 317", jogWheels: "Yes", jogWheelDiameter: 140 },
+            { manufacturer: "Reloop", model: "Beatmix 4", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "558 x 317", jogWheels: "Yes", jogWheelDiameter: 140 },
+            { manufacturer: "Reloop", model: "Beatpad", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "460 x 325", jogWheels: "Yes", jogWheelDiameter: 155 },
+            { manufacturer: "Reloop", model: "Digital Jockey 2 CE", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110 },
+            { manufacturer: "Reloop", model: "Digital Jockey 2 IE", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110 },
+            { manufacturer: "Reloop", model: "Digital Jockey 2 ME", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110 },
+            { manufacturer: "Reloop", model: "Jockey 3 ME", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "420 x 300", jogWheels: "Yes", jogWheelDiameter: 155 },
+            { manufacturer: "Reloop", model: "Mixage", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "370 x 265", jogWheels: "Yes", jogWheelDiameter: 105 },
+            { manufacturer: "Reloop", model: "Terminal Mix 2/4", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "515 x 320", jogWheels: "Yes", jogWheelDiameter: 155 },
+            { manufacturer: "Roland", model: "DJ-505", supportLevel: "Community Supported", year: 2017, allInOne: "Yes", sync: "Yes", dimensions: "530 x 402", jogWheels: "Yes", jogWheelDiameter: 144 },
+            { manufacturer: "Sony", model: "Sixxaxis", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "157 x 95", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Soundless", model: "Studio joyMIDI", supportLevel: "Community Supported", year: "N/A", allInOne: "No", sync: "No", dimensions: "N/A", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Stanton", model: "DJC.4", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "410 x 280", jogWheels: "Yes", jogWheelDiameter: 130 },
+            { manufacturer: "Stanton", model: "SCS.1d", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "Yes", dimensions: "273 x 368", jogWheels: "Yes", jogWheelDiameter: 254 },
+            { manufacturer: "Stanton", model: "SCS.1m", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "218 x 368", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Stanton", model: "SCS.3d “DaScratch”", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "134 x 264", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Stanton", model: "SCS.3m “DaMix”", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "134 x 264", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Tascam", model: "US-428", supportLevel: "Community Supported", year: 2000, allInOne: "Yes", sync: "No", dimensions: "432 x 292", jogWheels: "Yes", jogWheelDiameter: "N/A" },
+            { manufacturer: "TrakProDJ", model: "TrakProDJ", supportLevel: "Community Supported", year: "N/A", allInOne: "No", sync: "No", dimensions: "N/A", jogWheels: "No", jogWheelDiameter: "-" },
+            { manufacturer: "Vestax", model: "Spin", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "358 x 241", jogWheels: "Yes", jogWheelDiameter: 110 },
+            { manufacturer: "Vestax", model: "Typhoon", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "356 x 241", jogWheels: "Yes", jogWheelDiameter: 120 },
+            { manufacturer: "Vestax", model: "VCI-100 (MixVibes 3DEX)", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "No", dimensions: "360 x 254", jogWheels: "Yes", jogWheelDiameter: 115 },
+            { manufacturer: "Vestax", model: "VCI-100 MKI", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "No", dimensions: "360 x 254", jogWheels: "Yes", jogWheelDiameter: 115 },
+            { manufacturer: "Vestax", model: "VCI-100 MKII", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "368 x 268", jogWheels: "Yes", jogWheelDiameter: 115 },
+            { manufacturer: "Vestax", model: "VCI-300", supportLevel: "Community Supported", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "410 x 275", jogWheels: "Yes", jogWheelDiameter: 135 },
+            { manufacturer: "Vestax", model: "VCI-400", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "457 x 328", jogWheels: "Yes", jogWheelDiameter: 135 },
+            { manufacturer: "Yaeltex", model: "MiniMixxx", supportLevel: "Community Supported", year: "N/A", allInOne: "No", sync: "No", dimensions: "N/A", jogWheels: "No", jogWheelDiameter: "-" }
+        ];
+
+        let charts = {};
+        let minJogWheel, maxJogWheel;
+        let data = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            data = cleanData(controllerData);
+            populateManufacturers();
+            setupJogWheelSlider();
+            setupEventListeners();
+            initializeTheme();
+            applyFiltersAndRender();
+
+            document.querySelectorAll('.filter-section-toggle').forEach(toggle => {
+                toggle.addEventListener('click', () => {
+                    const section = toggle.parentElement;
+                    section.classList.toggle('closed');
+                    const content = section.querySelector('select, div:not(.filter-section-toggle)');
+                    if (content) {
+                        content.classList.toggle('hidden');
+                    }
+                });
+            });
+        });
+        
+        function initializeTheme() {
+            const themeToggle = document.getElementById('theme-toggle');
+            const storedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    themeToggle.checked = true;
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    themeToggle.checked = false;
+                }
+                updateChartStyles(theme === 'dark');
+            };
+
+            if (storedTheme) {
+                applyTheme(storedTheme);
+            } else {
+                applyTheme(systemPrefersDark ? 'dark' : 'light');
+            }
+
+            themeToggle.addEventListener('change', () => {
+                const theme = themeToggle.checked ? 'dark' : 'light';
+                localStorage.setItem('theme', theme);
+                applyTheme(theme);
+            });
+        }
+        
+        function updateChartStyles(isDarkMode) {
+            const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+            const textColor = isDarkMode ? '#e2e8f0' : '#334155';
+            
+            Chart.defaults.color = textColor;
+            Chart.defaults.borderColor = gridColor;
+
+            Object.values(charts).forEach(chart => {
+                if(chart) {
+                    chart.options.scales.x.ticks.color = textColor;
+                    chart.options.scales.x.grid.color = gridColor;
+                    chart.options.scales.y.ticks.color = textColor;
+                    chart.options.scales.y.grid.color = gridColor;
+                    if(chart.options.plugins.legend) {
+                        chart.options.plugins.legend.labels.color = textColor;
+                    }
+                    chart.update();
+                }
+            });
+        }
+
+
+        function cleanData(rawData) {
+            return rawData.map(c => {
+                const diameterStr = String(c.jogWheelDiameter).replace('~', '');
+                const diameter = parseInt(diameterStr, 10);
+                const yearNum = parseInt(c.year, 10);
+
+                return {
+                    ...c,
+                    year: !isNaN(yearNum) ? yearNum : null,
+                    jogWheelDiameter: !isNaN(diameter) ? diameter : null
+                };
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('search').addEventListener('input', applyFiltersAndRender);
+            document.getElementById('manufacturer').addEventListener('change', applyFiltersAndRender);
+            document.getElementById('sort').addEventListener('change', applyFiltersAndRender);
+            document.getElementById('reset-filters').addEventListener('click', resetFilters);
+            document.querySelectorAll('.feature-filter, .support-filter').forEach(el => {
+                el.addEventListener('change', applyFiltersAndRender);
+            });
+            document.getElementById('min-jog-wheel').addEventListener('input', handleSliderInput);
+            document.getElementById('max-jog-wheel').addEventListener('input', handleSliderInput);
+        }
+
+        function setupJogWheelSlider() {
+            const diameters = data
+                .map(c => c.jogWheelDiameter)
+                .filter(d => d !== null);
+            
+            minJogWheel = Math.min(...diameters);
+            maxJogWheel = Math.max(...diameters);
+
+            const minSlider = document.getElementById('min-jog-wheel');
+            const maxSlider = document.getElementById('max-jog-wheel');
+
+            minSlider.min = maxSlider.min = minJogWheel;
+            minSlider.max = maxSlider.max = maxJogWheel;
+            minSlider.value = minJogWheel;
+            maxSlider.value = maxJogWheel;
+            
+            updateSliderUI();
+        }
+
+        function handleSliderInput() {
+            const minSlider = document.getElementById('min-jog-wheel');
+            const maxSlider = document.getElementById('max-jog-wheel');
+            if (parseInt(minSlider.value) > parseInt(maxSlider.value)) {
+                [minSlider.value, maxSlider.value] = [maxSlider.value, minSlider.value];
+            }
+            updateSliderUI();
+            applyFiltersAndRender();
+        }
+
+        function updateSliderUI() {
+            const minSlider = document.getElementById('min-jog-wheel');
+            const maxSlider = document.getElementById('max-jog-wheel');
+            const rangeDisplay = document.getElementById('jog-wheel-range-display');
+            const rangeColor = document.getElementById('slider-range-color');
+
+            const minPercent = ((minSlider.value - minJogWheel) / (maxJogWheel - minJogWheel)) * 100;
+            const maxPercent = ((maxSlider.value - minJogWheel) / (maxJogWheel - minJogWheel)) * 100;
+
+            rangeColor.style.left = `${minPercent}%`;
+            rangeColor.style.width = `${maxPercent - minPercent}%`;
+            rangeDisplay.textContent = `${minSlider.value} - ${maxSlider.value}`;
+        }
+
+        function populateManufacturers() {
+            const manufacturers = [...new Set(data.map(c => c.manufacturer))].sort();
+            const select = document.getElementById('manufacturer');
+            manufacturers.forEach(m => {
+                const option = document.createElement('option');
+                option.value = m;
+                option.textContent = m;
+                select.appendChild(option);
+            });
+        }
+        
+        function getFilters() {
+            const supportFilters = Array.from(document.querySelectorAll('.support-filter:checked')).map(el => el.value);
+            return {
+                search: document.getElementById('search').value.toLowerCase(),
+                manufacturer: document.getElementById('manufacturer').value,
+                sort: document.getElementById('sort').value,
+                allInOne: document.getElementById('filter-allinone').checked,
+                jogWheels: document.getElementById('filter-jogwheels').checked,
+                sync: document.getElementById('filter-sync').checked,
+                supportLevels: supportFilters.length > 0 ? supportFilters : null,
+                minJog: parseInt(document.getElementById('min-jog-wheel').value),
+                maxJog: parseInt(document.getElementById('max-jog-wheel').value),
+            };
+        }
+
+        function applyFiltersAndRender() {
+            const filters = getFilters();
+            let filteredData = [...data];
+
+            if (filters.search) {
+                filteredData = filteredData.filter(c => c.model.toLowerCase().includes(filters.search));
+            }
+            if (filters.manufacturer !== 'all') {
+                filteredData = filteredData.filter(c => c.manufacturer === filters.manufacturer);
+            }
+            if (filters.allInOne) {
+                filteredData = filteredData.filter(c => c.allInOne === 'Yes');
+            }
+            if (filters.jogWheels) {
+                filteredData = filteredData.filter(c => c.jogWheels === 'Yes');
+            }
+            if (filters.sync) {
+                filteredData = filteredData.filter(c => c.sync === 'Yes');
+            }
+            if (filters.supportLevels) {
+                filteredData = filteredData.filter(c => filters.supportLevels.includes(c.supportLevel));
+            }
+            
+            const isSliderActive = filters.minJog > minJogWheel || filters.maxJog < maxJogWheel;
+            if (isSliderActive) {
+                 filteredData = filteredData.filter(c => {
+                    if (c.jogWheelDiameter === null) return false;
+                    return c.jogWheelDiameter >= filters.minJog && c.jogWheelDiameter <= filters.maxJog;
+                });
+            }
+
+            sortData(filteredData, filters.sort);
+            renderGrid(filteredData);
+            updateCharts(filteredData);
+            updateTotalControllers(filteredData.length);
+        }
+        
+        function sortData(data, sortBy) {
+            data.sort((a, b) => {
+                switch (sortBy) {
+                    case 'year-desc':
+                        if (a.year === null) return 1;
+                        if (b.year === null) return -1;
+                        return b.year - a.year;
+                    case 'year-asc':
+                        if (a.year === null) return 1;
+                        if (b.year === null) return -1;
+                        return a.year - b.year;
+                    case 'jogwheel-desc':
+                        if (a.jogWheelDiameter === null) return 1;
+                        if (b.jogWheelDiameter === null) return -1;
+                        return b.jogWheelDiameter - a.jogWheelDiameter;
+                    case 'jogwheel-asc':
+                        if (a.jogWheelDiameter === null) return 1;
+                        if (b.jogWheelDiameter === null) return -1;
+                        return a.jogWheelDiameter - b.jogWheelDiameter;
+                    case 'manufacturer-asc':
+                    default:
+                        return a.manufacturer.localeCompare(b.manufacturer);
+                }
+            });
+        }
+
+        function renderGrid(data) {
+            const grid = document.getElementById('grid');
+            const noResults = document.getElementById('no-results');
+            grid.innerHTML = '';
+
+            if (data.length === 0) {
+                noResults.classList.remove('hidden');
+                grid.classList.add('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            grid.classList.remove('hidden');
+
+            data.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'bg-white dark:bg-slate-800 p-5 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col';
+                
+                const supportClass = c.supportLevel === 'Mixxx Certified' ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' : 'bg-sky-100 text-sky-800 dark:bg-sky-900/50 dark:text-sky-300';
+
+                card.innerHTML = `
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">${c.model}</h3>
+                            <span class="text-xs font-semibold px-2 py-1 rounded-full ${supportClass}">${c.supportLevel}</span>
+                        </div>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">${c.manufacturer} &bull; ${c.year || 'N/A'}</p>
+
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm mb-4">
+                            <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">All-in-one:</span> <span class="text-slate-800 dark:text-slate-300">${c.allInOne}</span></div>
+                            <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Sync:</span> <span class="text-slate-800 dark:text-slate-300">${c.sync}</span></div>
+                            <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Jog Wheels:</span> <span class="text-slate-800 dark:text-slate-300">${c.jogWheels}</span></div>
+                            <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Jog Ø:</span> <span class="text-slate-800 dark:text-slate-300">${c.jogWheelDiameter !== null ? c.jogWheelDiameter + ' mm' : '-'}</span></div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-400 dark:text-slate-500 border-t border-slate-200 dark:border-slate-700 pt-3 mt-auto">Dimensions: ${c.dimensions !== 'Not available' ? c.dimensions + ' mm' : '-'}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        function resetFilters() {
+            document.getElementById('search').value = '';
+            document.getElementById('manufacturer').value = 'all';
+            document.getElementById('sort').value = 'manufacturer-asc';
+            document.querySelectorAll('.feature-filter, .support-filter').forEach(el => el.checked = false);
+            
+            const minSlider = document.getElementById('min-jog-wheel');
+            const maxSlider = document.getElementById('max-jog-wheel');
+            minSlider.value = minJogWheel;
+            maxSlider.value = maxJogWheel;
+            updateSliderUI();
+
+            applyFiltersAndRender();
+        }
+
+        function updateTotalControllers(count) {
+            document.getElementById('total-controllers').textContent = count;
+        }
+
+        function updateCharts(data) {
+            updateManufacturerChart(data);
+            updateYearChart(data);
+            updateFeatureChart(data, 'allInOneChart', 'allInOne', 'All-in-one');
+            updateFeatureChart(data, 'jogWheelsChart', 'jogWheels', 'Jog Wheels');
+            updateFeatureChart(data, 'syncChart', 'sync', 'Sync Button');
+        }
+        
+        function createChart(ctx, type, data, options) {
+            const chartId = ctx.canvas.id;
+            if (charts[chartId]) {
+                charts[chartId].destroy();
+            }
+            charts[chartId] = new Chart(ctx, { type, data, options });
+        }
+
+        function updateManufacturerChart(data) {
+            const ctx = document.getElementById('manufacturerChart').getContext('2d');
+            const counts = data.reduce((acc, c) => {
+                acc[c.manufacturer] = (acc[c.manufacturer] || 0) + 1;
+                return acc;
+            }, {});
+            const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+            const labels = sorted.map(item => item[0]);
+            const values = sorted.map(item => item[1]);
+
+            createChart(ctx, 'bar', {
+                labels: labels,
+                datasets: [{
+                    label: '# of Controllers',
+                    data: values,
+                    backgroundColor: 'rgba(245, 158, 11, 0.6)', // amber-500
+                    borderColor: 'rgba(245, 158, 11, 1)',
+                    borderWidth: 1
+                }]
+            }, {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    },
+                    y: {}
+                },
+                plugins: { legend: { display: false } },
+                onClick: (e) => {
+                    const activePoints = charts.manufacturerChart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+                    if (activePoints.length) {
+                        const firstPoint = activePoints[0];
+                        const label = charts.manufacturerChart.data.labels[firstPoint.index];
+                        document.getElementById('manufacturer').value = label;
+                        applyFiltersAndRender();
+                    }
+                }
+            });
+        }
+
+        function updateYearChart(data) {
+            const ctx = document.getElementById('yearChart').getContext('2d');
+            const counts = data.reduce((acc, c) => {
+                if (c.year) {
+                    acc[c.year] = (acc[c.year] || 0) + 1;
+                }
+                return acc;
+            }, {});
+            const sortedYears = Object.keys(counts).sort((a, b) => a - b);
+            const labels = sortedYears;
+            const values = sortedYears.map(year => counts[year]);
+
+            createChart(ctx, 'line', {
+                labels: labels,
+                datasets: [{
+                    label: 'Controllers Released',
+                    data: values,
+                    fill: true,
+                    backgroundColor: 'rgba(14, 165, 233, 0.2)', // sky-500
+                    borderColor: 'rgba(14, 165, 233, 1)',
+                    tension: 0.1
+                }]
+            }, {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    },
+                    x: {}
+                },
+                plugins: { legend: { display: false } }
+            });
+        }
+
+        function updateFeatureChart(data, chartId, feature, label) {
+            const ctx = document.getElementById(chartId).getContext('2d');
+            const yesCount = data.filter(c => c[feature] === 'Yes').length;
+            const noCount = data.length - yesCount;
+            
+            const chartData = {
+                labels: ['Yes', 'No'],
+                datasets: [{
+                    label: label,
+                    data: [yesCount, noCount],
+                    backgroundColor: [
+                        'rgba(22, 163, 74, 0.6)', // green-600
+                        'rgba(220, 38, 38, 0.5)' // red-600
+                    ],
+                    borderColor: [
+                        'rgba(22, 163, 74, 1)',
+                        'rgba(220, 38, 38, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            createChart(ctx, 'doughnut', chartData, {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                },
+                onClick: (e) => {
+                    const activePoints = charts[chartId].getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+                    if (activePoints.length) {
+                        const clickedLabel = charts[chartId].data.labels[activePoints[0].index];
+                        let checkboxId;
+                        if (feature === 'allInOne') checkboxId = 'filter-allinone';
+                        if (feature === 'jogWheels') checkboxId = 'filter-jogwheels';
+                        if (feature === 'sync') checkboxId = 'filter-sync';
+                        
+                        if (checkboxId) {
+                            const checkbox = document.getElementById(checkboxId);
+                            checkbox.checked = clickedLabel === 'Yes';
+                            applyFiltersAndRender();
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
