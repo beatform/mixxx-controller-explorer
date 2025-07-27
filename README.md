@@ -2,6 +2,8 @@
 
 An interactive, single-page web application designed to explore, filter, and visualize the comprehensive list of DJ controllers compatible with the open-source Mixxx software.
 
+[Visit Explorer ↗](https://beatform.github.io/mixxx-controller-explorer/)
+
 ## What The Project Does
 
 This project transforms a static list of hardware into a dynamic, user-friendly dashboard. It allows users to instantly search, sort, and filter over 150 DJ controllers based on various criteria, helping them find the perfect hardware for their needs. The application also provides interactive charts for a high-level overview of the controller market.
@@ -29,6 +31,8 @@ This project is a self-contained, single-page application. No installation is re
 * **Open:** Open the index.html file in any modern web browser (like Chrome, Firefox, or Safari).
 
 * **Explore:** Use the filters and interactive elements to explore the data.
+
+Alternatively, [Visit Explorer ↗](https://beatform.github.io/mixxx-controller-explorer/)
 
 ## Where to Get Help
 
