@@ -12,10 +12,10 @@
     <!-- Chosen Palette: Warm Neutrals (Slate, Stone, Amber) -->
     <!-- Application Structure Plan: A dashboard-style layout was chosen for its clarity and efficiency. The structure includes a header for context, a persistent sidebar for primary filtering and search controls, and a main content area. The main area is split into two sections: a top row of interactive charts for high-level data visualization and a dynamic grid of controller cards below for detailed exploration. This structure facilitates a natural user flow: users can get an overview from the charts, then use the filters or click the charts to drill down into the specific controller data presented in the cards. This is more intuitive and engaging than a simple table, especially for comparing products. -->
     <!-- Visualization & Content Choices: 
-        - Report Info: Manufacturer distribution -> Goal: Compare -> Viz: Bar Chart -> Interaction: Click bar to filter controllers -> Justification: Quickly shows market share and allows for brand-specific exploration. Library: Chart.js.
-        - Report Info: Controllers released over time -> Goal: Show Change -> Viz: Line Chart -> Interaction: Hover for details -> Justification: Visualizes the growth and evolution of controller technology. Library: Chart.js.
-        - Report Info: Key feature prevalence (All-in-one, Jog Wheels, Sync) -> Goal: Inform/Compare -> Viz: Donut Charts -> Interaction: Click segment to filter -> Justification: Provides a quick, digestible summary of common hardware configurations. Library: Chart.js.
-        - Report Info: Full controller data -> Goal: Organize/Inform -> Presentation: Interactive Card Grid -> Interaction: Filter/Sort/Search -> Justification: Cards are more readable and responsive than a wide table, allowing for easy comparison of individual products. Method: HTML/CSS/JS.
+         - Report Info: Manufacturer distribution -> Goal: Compare -> Viz: Bar Chart -> Interaction: Click bar to filter controllers -> Justification: Quickly shows market share and allows for brand-specific exploration. Library: Chart.js.
+         - Report Info: Controllers released over time -> Goal: Show Change -> Viz: Line Chart -> Interaction: Hover for details -> Justification: Visualizes the growth and evolution of controller technology. Library: Chart.js.
+         - Report Info: Key feature prevalence (All-in-one, Jog Wheels, Sync) -> Goal: Inform/Compare -> Viz: Donut Charts -> Interaction: Click segment to filter -> Justification: Provides a quick, digestible summary of common hardware configurations. Library: Chart.js.
+         - Report Info: Full controller data -> Goal: Organize/Inform -> Presentation: Interactive Card Grid -> Interaction: Filter/Sort/Search -> Justification: Cards are more readable and responsive than a wide table, allowing for easy comparison of individual products. Method: HTML/CSS/JS.
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script>
@@ -180,7 +180,7 @@
                                 </div>
                                 <div class="slider-container">
                                     <div class="slider-track"></div>
-                                    <div id="slider-range-color" class="slider-range"></div>
+                                    <div id="jog-wheel-slider-range-color" class="slider-range"></div>
                                     <input type="range" id="min-jog-wheel" class="range-slider">
                                     <input type="range" id="max-jog-wheel" class="range-slider">
                                 </div>
@@ -188,35 +188,16 @@
                         </div>
                     </div>
 
-                    <!-- Price Filter -->
-                    <div class="filter-section">
-                        <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Price <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
-                        <div class="mt-2">
-                            <div id="msrp-slider-container" class="space-y-2">
-                                <div class="flex justify-between items-center text-sm">
-                                    <label class="font-medium text-slate-600 dark:text-slate-400">MSRP ($)</label>
-                                    <span id="msrp-range-display" class="font-mono text-slate-500 dark:text-slate-400"></span>
-                                </div>
-                                <div class="slider-container">
-                                    <div class="slider-track"></div>
-                                    <div id="msrp-slider-range-color" class="slider-range"></div>
-                                    <input type="range" id="min-msrp" class="range-slider">
-                                    <input type="range" id="max-msrp" class="range-slider">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <!-- Sound Card Filter -->
                     <div class="filter-section">
                         <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Sound Card <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
                         <div class="mt-2 space-y-2">
                             <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" id="filter-soundcard" class="feature-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700">
+                                <input type="checkbox" id="filter-soundcard" class="soundcard-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700">
                                 <span>Integrated Sound Card</span>
                             </label>
                             <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="checkbox" id="filter-linux" class="feature-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700">
+                                <input type="checkbox" id="filter-linux" class="soundcard-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700">
                                 <span>Linux Compatible</span>
                             </label>
                         </div>
@@ -236,6 +217,25 @@
                             </label>
                         </div>
                     </div>
+
+                    <!-- Price Filter -->
+                    <div class="filter-section">
+                        <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Price <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
+                        <div class="mt-2 space-y-4">
+                             <div id="msrp-slider-container" class="space-y-2 pt-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <label class="font-medium text-slate-600 dark:text-slate-400">MSRP ($)</label>
+                                    <span id="msrp-range-display" class="font-mono text-slate-500 dark:text-slate-400"></span>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-track"></div>
+                                    <div id="msrp-slider-range-color" class="slider-range"></div>
+                                    <input type="range" id="min-msrp" class="range-slider">
+                                    <input type="range" id="max-msrp" class="range-slider">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <!-- Sorting -->
                     <div class="filter-section">
@@ -249,8 +249,6 @@
                             <option value="year-asc">Year of Release (Oldest)</option>
                             <option value="jogwheel-desc">Jog Wheel Size (Largest)</option>
                             <option value="jogwheel-asc">Jog Wheel Size (Smallest)</option>
-                            <option value="msrp-desc">Price (High to Low)</option>
-                            <option value="msrp-asc">Price (Low to High)</option>
                         </select>
                     </div>
                 </div>
@@ -262,7 +260,8 @@
         <!-- Main Content -->
         <main class="flex-1 p-6 lg:p-8 relative">
             <!-- Dark Mode Toggle -->
-            <div class="absolute top-6 right-6">
+            <div class="absolute top-6 right-6 flex items-center space-x-2 text-slate-500 dark:text-slate-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
                 <label for="theme-toggle" class="flex items-center cursor-pointer">
                     <div class="relative">
                         <input type="checkbox" id="theme-toggle" class="sr-only">
@@ -270,13 +269,16 @@
                         <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform dark:translate-x-6"></div>
                     </div>
                 </label>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
             </div>
 
             <!-- Charts Section -->
             <section id="charts-section">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Market Overview</h2>
-                    <p class="mt-2 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">These charts provide a high-level look at the DJ controllers mapped with Mixxx. Click on any chart segment to instantly filter the controller list below and explore the data interactively.</p>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">These charts provide a high-level look at the DJ controllers mapped with Mixxx.
+                        <br><br>
+                        Click on any chart segment to instantly filter the controller list below and explore the data interactively.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
                     <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700 col-span-1 md:col-span-2">
@@ -334,144 +336,146 @@
     </div>
 
     <script>
+        // --- DATASET ---
+        // NOTE: MSRP, hasSoundcard, and linuxSupport values are placeholders for demonstration purposes.
         const controllerData = [
-            { manufacturer: "Akai", model: "LPD8", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "No", dimensions: "311 x 81", jogWheels: "No", jogWheelDiameter: "-", msrp: 69, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Akai", model: "MPD24", supportLevel: "Community Supported", year: 2007, allInOne: "No", sync: "No", dimensions: "315 x 264", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Allen & Heath", model: "Xone:K1", supportLevel: "Mixxx Certified", year: 2014, allInOne: "No", sync: "No", dimensions: "135 x 358", jogWheels: "No", jogWheelDiameter: "-", msrp: 249, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Allen & Heath", model: "Xone:K2", supportLevel: "Mixxx Certified", year: 2012, allInOne: "No", sync: "No", dimensions: "135 x 358", jogWheels: "No", jogWheelDiameter: "-", msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "American Audio", model: "Radius 1000 / 2000 / 3000", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "265 x 356", jogWheels: "Yes", jogWheelDiameter: 135, msrp: 299, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "American Audio", model: "VMS2", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "360 x 290", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "American Audio", model: "VMS4 / 4.1", supportLevel: "Mixxx Certified", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "482 x 325", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 499, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Behringer", model: "BCD2000", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "Yes", dimensions: "330 x 300", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 199, integratedSoundCard: "Yes", linuxCompatible: "No (Requires specific drivers)" },
-            { manufacturer: "Behringer", model: "BCD3000", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "330 x 300", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 199, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Behringer", model: "BCR2000", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "300 x 210", jogWheels: "No", jogWheelDiameter: "-", msrp: 149, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Behringer", model: "CMD Micro", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "305 x 102", jogWheels: "Yes", jogWheelDiameter: 60, msrp: 69, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Behringer", model: "CMD MM-1", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "305 x 152", jogWheels: "No", jogWheelDiameter: "-", msrp: 129, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Behringer", model: "CMD STUDIO 4a", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "502 x 308", jogWheels: "Yes", jogWheelDiameter: 152, msrp: 199, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Behringer", model: "DDM4000", supportLevel: "Community Supported", year: 2007, allInOne: "No", sync: "No", dimensions: "320 x 391", jogWheels: "No", jogWheelDiameter: "-", msrp: 349, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Denon DJ", model: "DN-HS5500", supportLevel: "Mixxx Certified", year: 2008, allInOne: "No", sync: "Yes", dimensions: "300 x 324", jogWheels: "Yes", jogWheelDiameter: 190, msrp: 999, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Denon DJ", model: "DN-SC2000", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "250 x 215", jogWheels: "No", jogWheelDiameter: "-", msrp: 249, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Denon DJ", model: "MC3000", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "460 x 255", jogWheels: "Yes", jogWheelDiameter: 105, msrp: 499, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Denon DJ", model: "MC4000", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "505 x 297", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 399, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Denon DJ", model: "MC6000MK2", supportLevel: "Mixxx Certified", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "460 x 283", jogWheels: "Yes", jogWheelDiameter: 105, msrp: 699, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Denon DJ", model: "MC7000", supportLevel: "Community Supported", year: 2017, allInOne: "Yes", sync: "Yes", dimensions: "667 x 378", jogWheels: "Yes", jogWheelDiameter: 150, msrp: 999, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "DJ Tech", model: "CDJ 101", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "Yes", dimensions: "216 x 216", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 99, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "DJ Tech", model: "DJM 101", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "152 x 216", jogWheels: "No", jogWheelDiameter: "-", msrp: 79, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "DJ Tech", model: "iMix Reload", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "360 x 255", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 259, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "DJ Tech", model: "Kontrol One", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "150 x 300", jogWheels: "No", jogWheelDiameter: "-", msrp: 129, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "DJ Tech", model: "MIX-101", supportLevel: "Community Supported", year: "Not available", allInOne: "No", sync: "No", dimensions: "Not available", jogWheels: "No", jogWheelDiameter: "-", msrp: null, integratedSoundCard: "N/A", linuxCompatible: "N/A" },
-            { manufacturer: "DJ Tech", model: "Mixer One", supportLevel: "Community Supported", year: "Not available", allInOne: "No", sync: "No", dimensions: "Not available", jogWheels: "No", jogWheelDiameter: "-", msrp: null, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "DJ TechTools", model: "MIDI Fighter Classic", supportLevel: "Mixxx Certified", year: 2011, allInOne: "No", sync: "No", dimensions: "152 x 152", jogWheels: "No", jogWheelDiameter: "-", msrp: 125, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "DJ TechTools", model: "MIDI Fighter Spectra", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "152 x 152", jogWheels: "No", jogWheelDiameter: "-", msrp: 179, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "DJ TechTools", model: "MIDI Fighter Twister", supportLevel: "Community Supported", year: 2015, allInOne: "No", sync: "No", dimensions: "152 x 152", jogWheels: "No", jogWheelDiameter: "-", msrp: 219, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "EKS", model: "Otus", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "335 x 335", jogWheels: "Yes", jogWheelDiameter: "~200", msrp: 699, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Electrix", model: "Tweaker", supportLevel: "Community Supported", year: 2012, allInOne: "No", sync: "No", dimensions: "280 x 140", jogWheels: "No", jogWheelDiameter: "-", msrp: 299, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Evolution", model: "X-Session", supportLevel: "Community Supported", year: 2004, allInOne: "No", sync: "No", dimensions: "254 x 140", jogWheels: "No", jogWheelDiameter: "-", msrp: 129, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "FaderFox", model: "DJ2", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "180 x 105", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Gemini", model: "CDMP-7000", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "720 x 315", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 799, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Gemini", model: "FirstMix", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "360 x 133", jogWheels: "Yes", jogWheelDiameter: 80, msrp: 79, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Hercules", model: "DJ Console 4-Mx", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "400 x 250", jogWheels: "Yes", jogWheelDiameter: 120, msrp: 449, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJ Console (Mac Edition)", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "Yes", dimensions: "Not available", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJ Console MK1", supportLevel: "Community Supported", year: 2004, allInOne: "Yes", sync: "No", dimensions: "235 x 200", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJ Console MK2", supportLevel: "Mixxx Certified", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "235 x 200", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 199, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJ Console MK4", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 199, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJ Console RMX", supportLevel: "Mixxx Certified", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "350 x 250", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJ Console RMX2", supportLevel: "Mixxx Certified", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "350 x 250", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJControl AIR", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "350 x 220", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 169, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJControl Compact", supportLevel: "Mixxx Certified", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "340 x 100", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 79, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Hercules", model: "DJControl Inpulse 200", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "320 x 195", jogWheels: "Yes", jogWheelDiameter: 90, msrp: 99, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJControl Inpulse 300", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "480 x 286", jogWheels: "Yes", jogWheelDiameter: 150, msrp: 199, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJControl Inpulse 500", supportLevel: "Community Supported", year: 2020, allInOne: "Yes", sync: "Yes", dimensions: "542 x 296", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJControl Instinct (S)", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 129, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJControl Jogvision", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "455 x 254", jogWheels: "Yes", jogWheelDiameter: 150, msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "DJControl MIX", supportLevel: "Community Supported", year: 2021, allInOne: "Yes", sync: "Yes", dimensions: "340 x 100", jogWheels: "Yes", jogWheelDiameter: 55, msrp: 99, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Hercules", model: "DJControl MP3", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 129, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Hercules", model: "DJControl MP3 e2 / MP3 LE / Glow", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 129, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Hercules", model: "DJControl Starlight", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "340 x 100", jogWheels: "Yes", jogWheelDiameter: 89, msrp: 79, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Hercules", model: "P32 DJ", supportLevel: "Mixxx Certified", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "353 x 238", jogWheels: "No", jogWheelDiameter: "-", msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "ION", model: "Discover DJ", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "451 x 203", jogWheels: "Yes", jogWheelDiameter: "Not available", msrp: 79, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "ION", model: "Discover DJ Pro", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "Not available", jogWheels: "Yes", jogWheelDiameter: "Not available", msrp: 149, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Keith McMillen", model: "QuNeo", supportLevel: "Community Supported", year: 2012, allInOne: "No", sync: "No", dimensions: "241 x 184", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Kontrol DJ", model: "KDJ500", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "218 x 197", jogWheels: "Yes", jogWheelDiameter: "Not available", msrp: 149, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Korg", model: "Kaoss DJ controller", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "280 x 216", jogWheels: "No", jogWheelDiameter: "-", msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Korg", model: "nanoKONTROL", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "320 x 82", jogWheels: "No", jogWheelDiameter: "-", msrp: 59, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Korg", model: "nanoKONTROL2", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "325 x 83", jogWheels: "No", jogWheelDiameter: "-", msrp: 59, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Korg", model: "nanoPAD2", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "325 x 83", jogWheels: "No", jogWheelDiameter: "-", msrp: 59, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "M-Audio", model: "X-Session Pro", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "262 x 165", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "M-Audio", model: "Torq Xponent", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "406 x 292", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 499, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Miditech", model: "Midicontrol", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "No", dimensions: "345 x 97", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Mixman", model: "DM2", supportLevel: "Community Supported", year: 2002, allInOne: "No", sync: "No", dimensions: "229 x 178", jogWheels: "No", jogWheelDiameter: "-", msrp: 129, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "MixVibes", model: "U-Mix Control (Pro) 2", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "360 x 200", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Native Instruments", model: "Traktor Kontrol F1", supportLevel: "Community Supported", year: 2012, allInOne: "No", sync: "No", dimensions: "120 x 294", jogWheels: "No", jogWheelDiameter: "-", msrp: 249, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Native Instruments", model: "Traktor Kontrol S2 MK1", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "438 x 308", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 599, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Native Instruments", model: "Traktor Kontrol S2 MK2", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "438 x 308", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 499, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Native Instruments", model: "Traktor Kontrol S2 MK3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "486 x 265", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 339, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Native Instruments", model: "Traktor Kontrol S3", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "544 x 303", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 649, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Native Instruments", model: "Traktor Kontrol S4 MK2", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "500 x 338", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 799, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Native Instruments", model: "Traktor Kontrol S4 MK3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "542 x 339", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 999, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Native Instruments", model: "Traktor Kontrol X1", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "No", dimensions: "120 x 294", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Native Instruments", model: "Traktor Kontrol Z1", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "120 x 294", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Nintendo", model: "Wiimote", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "38 x 148", jogWheels: "No", jogWheelDiameter: "-", msrp: 39, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Novation", model: "Dicer", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "No", dimensions: "90 x 90", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Novation", model: "Launchpad Mini", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "185 x 185", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Novation", model: "Launchpad MK1", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "No", dimensions: "240 x 240", jogWheels: "No", jogWheelDiameter: "-", msrp: 149, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Novation", model: "Launchpad MK2", supportLevel: "Community Supported", year: 2015, allInOne: "No", sync: "No", dimensions: "240 x 240", jogWheels: "No", jogWheelDiameter: "-", msrp: 149, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Novation", model: "Twitch", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "356 x 267", jogWheels: "No", jogWheelDiameter: "-", msrp: 499, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "DJ2GO", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "297 x 84", jogWheels: "Yes", jogWheelDiameter: 70, msrp: 59, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Numark", model: "DJ2GO2 Touch", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "314 x 86", jogWheels: "Yes", jogWheelDiameter: 70, msrp: 79, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "iDJ Live II", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "420 x 193", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 99, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Numark", model: "Mixtrack", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "476 x 298", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 149, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Numark", model: "Mixtrack Platinum", supportLevel: "Community Supported", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "549 x 231", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "Mixtrack Platinum FX", supportLevel: "Community Supported", year: 2020, allInOne: "Yes", sync: "Yes", dimensions: "536 x 246", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 279, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "Mixtrack Pro", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "476 x 298", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "Mixtrack (Pro) 3", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "550 x 232", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "Mixtrack Pro FX", supportLevel: "Community Supported", year: 2020, allInOne: "Yes", sync: "Yes", dimensions: "536 x 246", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 229, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "Mixtrack Pro II", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "464 x 264", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "N4", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "572 x 305", jogWheels: "Yes", jogWheelDiameter: 150, msrp: 499, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "NS6II", supportLevel: "Community Supported", year: 2017, allInOne: "Yes", sync: "Yes", dimensions: "560 x 360", jogWheels: "Yes", jogWheelDiameter: 133, msrp: 799, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "NS7", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "762 x 399", jogWheels: "Yes", jogWheelDiameter: 178, msrp: 1299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "Omni Control", supportLevel: "Community Supported", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "356 x 267", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 399, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "Party Mix", supportLevel: "Community Supported", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "326 x 199", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 99, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "Scratch", supportLevel: "Community Supported", year: 2018, allInOne: "No", sync: "No", dimensions: "242 x 308", jogWheels: "No", jogWheelDiameter: "-", msrp: 499, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Numark", model: "Total Control", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "305 x 267", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 249, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Numark", model: "V7", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "305 x 368", jogWheels: "Yes", jogWheelDiameter: 178, msrp: 599, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Pioneer DJ", model: "CDJ-2000", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "Yes", dimensions: "320 x 406", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 1899, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Pioneer DJ", model: "CDJ-350", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "220 x 289", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 599, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Pioneer DJ", model: "CDJ-850", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "305 x 364", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 899, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Pioneer DJ", model: "DDJ-200", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "378 x 208", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 149, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Pioneer DJ", model: "DDJ-400", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "482 x 272", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Pioneer DJ", model: "DDJ-FLX4", supportLevel: "Community Supported", year: 2022, allInOne: "Yes", sync: "Yes", dimensions: "482 x 273", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Pioneer DJ", model: "DDJ-SB", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "487 x 271", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Pioneer DJ", model: "DDJ-SB2", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "487 x 271", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Pioneer DJ", model: "DDJ-SB3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "483 x 272", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Pioneer DJ", model: "DDJ-SX", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "664 x 357", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 999, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Reloop", model: "Beatmix 2", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "492 x 317", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Reloop", model: "Beatmix 4", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "558 x 317", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 499, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Reloop", model: "Beatpad", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "460 x 325", jogWheels: "Yes", jogWheelDiameter: 155, msrp: 599, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Reloop", model: "Digital Jockey 2 CE", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 399, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Reloop", model: "Digital Jockey 2 IE", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 499, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Reloop", model: "Digital Jockey 2 ME", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 599, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Reloop", model: "Jockey 3 ME", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "420 x 300", jogWheels: "Yes", jogWheelDiameter: 155, msrp: 699, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Reloop", model: "Mixage", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "370 x 265", jogWheels: "Yes", jogWheelDiameter: 105, msrp: 349, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Reloop", model: "Terminal Mix 2/4", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "515 x 320", jogWheels: "Yes", jogWheelDiameter: 155, msrp: 599, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Roland", model: "DJ-505", supportLevel: "Community Supported", year: 2017, allInOne: "Yes", sync: "Yes", dimensions: "530 x 402", jogWheels: "Yes", jogWheelDiameter: 144, msrp: 699, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Sony", model: "Sixxaxis", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "157 x 95", jogWheels: "No", jogWheelDiameter: "-", msrp: 49, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Soundless", model: "Studio joyMIDI", supportLevel: "Community Supported", year: "N/A", allInOne: "No", sync: "No", dimensions: "N/A", jogWheels: "No", jogWheelDiameter: "-", msrp: 85, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Stanton", model: "DJC.4", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "410 x 280", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 399, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Stanton", model: "SCS.1d", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "Yes", dimensions: "273 x 368", jogWheels: "Yes", jogWheelDiameter: 254, msrp: 1499, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Stanton", model: "SCS.1m", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "218 x 368", jogWheels: "No", jogWheelDiameter: "-", msrp: 999, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Stanton", model: "SCS.3d “DaScratch”", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "134 x 264", jogWheels: "No", jogWheelDiameter: "-", msrp: 249, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Stanton", model: "SCS.3m “DaMix”", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "134 x 264", jogWheels: "No", jogWheelDiameter: "-", msrp: 249, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Tascam", model: "US-428", supportLevel: "Community Supported", year: 2000, allInOne: "Yes", sync: "No", dimensions: "432 x 292", jogWheels: "Yes", jogWheelDiameter: "N/A", msrp: 799, integratedSoundCard: "Yes", linuxCompatible: "No (Requires specific drivers)" },
-            { manufacturer: "TrakProDJ", model: "TrakProDJ", supportLevel: "Community Supported", year: "N/A", allInOne: "No", sync: "No", dimensions: "N/A", jogWheels: "No", jogWheelDiameter: "-", msrp: null, integratedSoundCard: "N/A", linuxCompatible: "N/A" },
-            { manufacturer: "Vestax", model: "Spin", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "358 x 241", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 249, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Vestax", model: "Typhoon", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "356 x 241", jogWheels: "Yes", jogWheelDiameter: 120, msrp: 299, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Vestax", model: "VCI-100 (MixVibes 3DEX)", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "No", dimensions: "360 x 254", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 499, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Vestax", model: "VCI-100 MKI", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "No", dimensions: "360 x 254", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 499, integratedSoundCard: "No", linuxCompatible: "No (No Sound Card)" },
-            { manufacturer: "Vestax", model: "VCI-100 MKII", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "368 x 268", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 599, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Vestax", model: "VCI-300", supportLevel: "Community Supported", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "410 x 275", jogWheels: "Yes", jogWheelDiameter: 135, msrp: 899, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Vestax", model: "VCI-400", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "457 x 328", jogWheels: "Yes", jogWheelDiameter: 135, msrp: 999, integratedSoundCard: "Yes", linuxCompatible: "Yes (Class Compliant)" },
-            { manufacturer: "Yaeltex", model: "MiniMixxx", supportLevel: "Community Supported", year: "N/A", allInOne: "No", sync: "No", dimensions: "N/A", jogWheels: "No", jogWheelDiameter: "-", msrp: null, integratedSoundCard: "N/A", linuxCompatible: "N/A" }
+            { manufacturer: "Akai", model: "LPD8", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "No", dimensions: "311 x 81", jogWheels: "No", jogWheelDiameter: "-", msrp: 69, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/1_akai_lpd8.png?raw=true" },
+            { manufacturer: "Akai", model: "MPD24", supportLevel: "Community Supported", year: 2007, allInOne: "No", sync: "No", dimensions: "315 x 264", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/2_Akai_MPD24.png?raw=true" },
+            { manufacturer: "Allen & Heath", model: "Xone:K1", supportLevel: "Mixxx Certified", year: 2014, allInOne: "No", sync: "No", dimensions: "135 x 358", jogWheels: "No", jogWheelDiameter: "-", msrp: 249, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/3_Allen%20&%20Heath_Xone-K1.png?raw=true" },
+            { manufacturer: "Allen & Heath", model: "Xone:K2", supportLevel: "Mixxx Certified", year: 2012, allInOne: "No", sync: "No", dimensions: "135 x 358", jogWheels: "No", jogWheelDiameter: "-", msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/4_Allen%20&%20Heath_Xone-K2.png?raw=true" },
+            { manufacturer: "American Audio", model: "Radius 1000 / 2000 / 3000", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "265 x 356", jogWheels: "Yes", jogWheelDiameter: 135, msrp: 350, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/5_American%20Audio_Radius%201000%20:%202000%20:%203000.png?raw=true" },
+            { manufacturer: "American Audio", model: "VMS2", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "360 x 290", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/6_American%20Audio_VMS2.png?raw=true" },
+            { manufacturer: "American Audio", model: "VMS4 / 4.1", supportLevel: "Mixxx Certified", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "482 x 325", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/7_American%20Audio_VMS4%20:%204.1.png?raw=true" },
+            { manufacturer: "Behringer", model: "BCD2000", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "Yes", dimensions: "330 x 300", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 149, hasSoundcard: "Yes", linuxSupport: "No", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/8_Behringer_BCD2000.png?raw=true" },
+            { manufacturer: "Behringer", model: "BCD3000", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "330 x 300", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 199, hasSoundcard: "Yes", linuxSupport: "No", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/9_Behringer_BCD3000.png?raw=true" },
+            { manufacturer: "Behringer", model: "BCR2000", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "300 x 210", jogWheels: "No", jogWheelDiameter: "-", msrp: 149, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/10_Behringer_BCR2000.png?raw=true" },
+            { manufacturer: "Behringer", model: "CMD Micro", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "305 x 102", jogWheels: "Yes", jogWheelDiameter: 60, msrp: 69, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/11_Behringer_CMD%20Micro.png?raw=true" },
+            { manufacturer: "Behringer", model: "CMD MM-1", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "305 x 152", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/12_Behringer_CMD%20MM-1.png?raw=true" },
+            { manufacturer: "Behringer", model: "CMD STUDIO 4a", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "502 x 308", jogWheels: "Yes", jogWheelDiameter: 152, msrp: 199, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/13_Behringer_CMD%20STUDIO%204a.png?raw=true" },
+            { manufacturer: "Behringer", model: "DDM4000", supportLevel: "Community Supported", year: 2007, allInOne: "No", sync: "No", dimensions: "320 x 391", jogWheels: "No", jogWheelDiameter: "-", msrp: 349, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/14_Behringer_DDM4000.png?raw=true" },
+            { manufacturer: "Denon DJ", model: "DN-HS5500", supportLevel: "Mixxx Certified", year: 2008, allInOne: "No", sync: "Yes", dimensions: "300 x 324", jogWheels: "Yes", jogWheelDiameter: 190, msrp: 999, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/15_Denon%20DJ_DN-HS5500.png?raw=true" },
+            { manufacturer: "Denon DJ", model: "DN-SC2000", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "250 x 215", jogWheels: "No", jogWheelDiameter: "-", msrp: 249, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/16_Denon%20DJ_DN-SC2000.png?raw=true" },
+            { manufacturer: "Denon DJ", model: "MC3000", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "460 x 255", jogWheels: "Yes", jogWheelDiameter: 105, msrp: 399, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/17_Denon%20DJ_MC3000.png?raw=true" },
+            { manufacturer: "Denon DJ", model: "MC4000", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "505 x 297", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 399, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/18_Denon%20DJ_MC4000.png?raw=true" },
+            { manufacturer: "Denon DJ", model: "MC6000MK2", supportLevel: "Mixxx Certified", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "460 x 283", jogWheels: "Yes", jogWheelDiameter: 105, msrp: 699, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/19_Denon%20DJ_MC6000MK2.png?raw=true" },
+            { manufacturer: "Denon DJ", model: "MC7000", supportLevel: "Community Supported", year: 2017, allInOne: "Yes", sync: "Yes", dimensions: "667 x 378", jogWheels: "Yes", jogWheelDiameter: 150, msrp: 999, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/20_Denon%20DJ_MC7000.png?raw=true" },
+            { manufacturer: "DJ Tech", model: "CDJ 101", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "Yes", dimensions: "216 x 216", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 129, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/21_DJ%20Tech_CDJ%20101.png?raw=true" },
+            { manufacturer: "DJ Tech", model: "DJM 101", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "152 x 216", jogWheels: "No", jogWheelDiameter: "-", msrp: 79, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/22_DJ%20Tech_DJM%20101.png?raw=true" },
+            { manufacturer: "DJ Tech", model: "iMix Reload", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "360 x 255", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 229, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/23_DJ%20Tech_iMix%20Reload.png?raw=true" },
+            { manufacturer: "DJ Tech", model: "Kontrol One", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "150 x 300", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/24_DJ%20Tech_Kontrol%20One.png?raw=true" },
+            { manufacturer: "DJ Tech", model: "MIX-101", supportLevel: "Community Supported", year: "Not available", allInOne: "No", sync: "No", dimensions: "Not available", jogWheels: "No", jogWheelDiameter: "-", msrp: null, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/25_DJ%20Tech_MIX-101.png?raw=true" },
+            { manufacturer: "DJ Tech", model: "Mixer One", supportLevel: "Community Supported", year: "Not available", allInOne: "No", sync: "No", dimensions: "Not available", jogWheels: "No", jogWheelDiameter: "-", msrp: null, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/26_DJ%20Tech_Mixer%20One.png?raw=true" },
+            { manufacturer: "DJ TechTools", model: "MIDI Fighter Classic", supportLevel: "Mixxx Certified", year: 2011, allInOne: "No", sync: "No", dimensions: "152 x 152", jogWheels: "No", jogWheelDiameter: "-", msrp: 125, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/27_DJ%20TechTools_MIDI%20Fighter%20Classic.png?raw=true" },
+            { manufacturer: "DJ TechTools", model: "MIDI Fighter Spectra", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "152 x 152", jogWheels: "No", jogWheelDiameter: "-", msrp: 179, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/28_DJ%20TechTools_MIDI%20Fighter%20Spectra.png?raw=true" },
+            { manufacturer: "DJ TechTools", model: "MIDI Fighter Twister", supportLevel: "Community Supported", year: 2015, allInOne: "No", sync: "No", dimensions: "152 x 152", jogWheels: "No", jogWheelDiameter: "-", msrp: 219, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/29_DJ%20TechTools_MIDI%20Fighter%20Twister.png?raw=true" },
+            { manufacturer: "EKS", model: "Otus", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "335 x 335", jogWheels: "Yes", jogWheelDiameter: "~200", msrp: 450, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/30_EKS_Otus.png?raw=true" },
+            { manufacturer: "Electrix", model: "Tweaker", supportLevel: "Community Supported", year: 2012, allInOne: "No", sync: "No", dimensions: "280 x 140", jogWheels: "No", jogWheelDiameter: "-", msrp: 200, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/31_Electrix_Tweaker.png?raw=true" },
+            { manufacturer: "Evolution", model: "X-Session", supportLevel: "Community Supported", year: 2004, allInOne: "No", sync: "No", dimensions: "254 x 140", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/32_Evolution_X-Session.png?raw=true" },
+            { manufacturer: "FaderFox", model: "DJ2", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "180 x 105", jogWheels: "No", jogWheelDiameter: "-", msrp: 150, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/33_FaderFox_DJ2.png?raw=true" },
+            { manufacturer: "Gemini", model: "CDMP-7000", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "720 x 315", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 799, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/34_Gemini_CDMP-7000.png?raw=true" },
+            { manufacturer: "Gemini", model: "FirstMix", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "360 x 133", jogWheels: "Yes", jogWheelDiameter: 80, msrp: 79, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/35_Gemini_FirstMix.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJ Console 4-Mx", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "400 x 250", jogWheels: "Yes", jogWheelDiameter: 120, msrp: 449, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/36_Hercules_DJ%20Console%204-Mx.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJ Console (Mac Edition)", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "Yes", dimensions: "Not available", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/37_Hercules_DJ%20Console%20(Mac%20Edition).png?raw=true" },
+            { manufacturer: "Hercules", model: "DJ Console MK1", supportLevel: "Community Supported", year: 2004, allInOne: "Yes", sync: "No", dimensions: "235 x 200", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/38_Hercules_DJ%20Console%20MK1.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJ Console MK2", supportLevel: "Mixxx Certified", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "235 x 200", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 169, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/39_Hercules_DJ%20Console%20MK2.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJ Console MK4", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 199, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/40_Hercules_DJ%20Console%20MK4.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJ Console RMX", supportLevel: "Mixxx Certified", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "350 x 250", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/41_Hercules_DJ%20Console%20RMX.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJ Console RMX2", supportLevel: "Mixxx Certified", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "350 x 250", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/42_Hercules_DJ%20Console%20RMX2.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl AIR", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "350 x 220", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 169, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/43_Hercules_DJControl%20AIR.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl Compact", supportLevel: "Mixxx Certified", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "340 x 100", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 69, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/44_Hercules_DJControl%20Compact.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl Inpulse 200", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "320 x 195", jogWheels: "Yes", jogWheelDiameter: 90, msrp: 99, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/45_Hercules_DJControl%20Inpulse%20200.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl Inpulse 300", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "480 x 286", jogWheels: "Yes", jogWheelDiameter: 150, msrp: 199, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/46_Hercules_DJControl%20Inpulse%20300.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl Inpulse 500", supportLevel: "Community Supported", year: 2020, allInOne: "Yes", sync: "Yes", dimensions: "542 x 296", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/47_Hercules_DJControl%20Inpulse%20500.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl Instinct (S)", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 129, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/48_Hercules_DJControl%20Instinct%20(S).png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl Jogvision", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "455 x 254", jogWheels: "Yes", jogWheelDiameter: 150, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/49_Hercules_DJControl%20Jogvision.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl MIX", supportLevel: "Community Supported", year: 2021, allInOne: "Yes", sync: "Yes", dimensions: "340 x 100", jogWheels: "Yes", jogWheelDiameter: 55, msrp: 99, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/50_Hercules_DJControl%20MIX.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl MP3", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 129, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/51_Hercules_DJControl%20MP3.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl MP3 e2 / MP3 LE / Glow", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "265 x 187", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 99, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/52_Hercules_DJControl%20MP3%20e2%20_%20MP3%20LE%20_%20Glow.png?raw=true" },
+            { manufacturer: "Hercules", model: "DJControl Starlight", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "340 x 100", jogWheels: "Yes", jogWheelDiameter: 89, msrp: 89, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/53_Hercules_DJControl%20Starlight.png?raw=true" },
+            { manufacturer: "Hercules", model: "P32 DJ", supportLevel: "Mixxx Certified", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "353 x 238", jogWheels: "No", jogWheelDiameter: "-", msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/54_Hercules_P32%20DJ.png?raw=true" },
+            { manufacturer: "ION", model: "Discover DJ", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "451 x 203", jogWheels: "Yes", jogWheelDiameter: "Not available", msrp: 79, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/55_ION_Discover%20DJ.png?raw=true" },
+            { manufacturer: "ION", model: "Discover DJ Pro", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "Not available", jogWheels: "Yes", jogWheelDiameter: "Not available", msrp: 99, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/56_ION_Discover%20DJ%20Pro.png?raw=true" },
+            { manufacturer: "Keith McMillen", model: "QuNeo", supportLevel: "Community Supported", year: 2012, allInOne: "No", sync: "No", dimensions: "241 x 184", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/57_Keith%20McMillen_QuNeo.png?raw=true" },
+            { manufacturer: "Kontrol DJ", model: "KDJ500", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "218 x 197", jogWheels: "Yes", jogWheelDiameter: "Not available", msrp: 149, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/58_Kontrol%20DJ_KDJ500.png?raw=true" },
+            { manufacturer: "Korg", model: "Kaoss DJ controller", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "280 x 216", jogWheels: "No", jogWheelDiameter: "-", msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/59_Korg_Kaoss%20DJ%20controller.png?raw=true" },
+            { manufacturer: "Korg", model: "nanoKONTROL", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "320 x 82", jogWheels: "No", jogWheelDiameter: "-", msrp: 59, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/60_Korg_nanoKONTROL.png?raw=true" },
+            { manufacturer: "Korg", model: "nanoKONTROL2", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "325 x 83", jogWheels: "No", jogWheelDiameter: "-", msrp: 69, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/61_Korg_nanoKONTROL2.png?raw=true" },
+            { manufacturer: "Korg", model: "nanoPAD2", supportLevel: "Community Supported", year: 2011, allInOne: "No", sync: "No", dimensions: "325 x 83", jogWheels: "No", jogWheelDiameter: "-", msrp: 69, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/62_Korg_nanoPAD2.png?raw=true" },
+            { manufacturer: "M-Audio", model: "X-Session Pro", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "262 x 165", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/63_M-Audio_X-Session%20Pro.png?raw=true" },
+            { manufacturer: "M-Audio", model: "Torq Xponent", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "406 x 292", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 399, hasSoundcard: "Yes", linuxSupport: "No", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/64_M-Audio_Torq%20Xponent.png?raw=true" },
+            { manufacturer: "Miditech", model: "Midicontrol", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "No", dimensions: "345 x 97", jogWheels: "No", jogWheelDiameter: "-", msrp: 89, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/65_Miditech_Midicontrol.png?raw=true" },
+            { manufacturer: "Mixman", model: "DM2", supportLevel: "Community Supported", year: 2002, allInOne: "No", sync: "No", dimensions: "229 x 178", jogWheels: "No", jogWheelDiameter: "-", msrp: 149, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/66_Mixman_DM2.png?raw=true" },
+            { manufacturer: "MixVibes", model: "U-Mix Control (Pro) 2", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "360 x 200", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 199, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/67_MixVibes_U-Mix%20Control%20(Pro)%202.png?raw=true" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol F1", supportLevel: "Community Supported", year: 2012, allInOne: "No", sync: "No", dimensions: "120 x 294", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, hasSoundcard: "No", linuxSupport: "No", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/68_Native%20Instruments_Traktor%20Kontrol%20F1.png?raw=true" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S2 MK1", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "438 x 308", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 399, hasSoundcard: "Yes", linuxSupport: "No", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/69_Native%20Instruments_Traktor%20Kontrol%20S2%20MK1.png?raw=true" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S2 MK2", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "438 x 308", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 399, hasSoundcard: "Yes", linuxSupport: "No", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/70_Native%20Instruments_Traktor%20Kontrol%20S2%20MK2.png?raw=true" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S2 MK3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "486 x 265", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 339, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/71_Native%20Instruments_Traktor%20Kontrol%20S2%20MK3.png?raw=true" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S3", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "544 x 303", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 649, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/72_Native%20Instruments_Traktor%20Kontrol%20S3.png?raw=true" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S4 MK2", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "500 x 338", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 599, hasSoundcard: "Yes", linuxSupport: "No", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/73_Native%20Instruments_Traktor%20Kontrol%20S4%20MK2.png?raw=true" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol S4 MK3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "542 x 339", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 999, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/74_Native%20Instruments_Traktor%20Kontrol%20S4%20MK3.png?raw=true" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol X1", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "No", dimensions: "120 x 294", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, hasSoundcard: "No", linuxSupport: "No", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/75_Native%20Instruments_Traktor%20Kontrol%20X1.png?raw=true" },
+            { manufacturer: "Native Instruments", model: "Traktor Kontrol Z1", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "120 x 294", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/76_Native%20Instruments_Traktor%20Kontrol%20Z1.png?raw=true" },
+            { manufacturer: "Nintendo", model: "Wiimote", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "38 x 148", jogWheels: "No", jogWheelDiameter: "-", msrp: 39, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/77_Nintendo_Wiimote.png?raw=true" },
+            { manufacturer: "Novation", model: "Dicer", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "No", dimensions: "90 x 90", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/78_Novation_Dicer.png?raw=true" },
+            { manufacturer: "Novation", model: "Launchpad Mini", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "185 x 185", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/79_Novation_Launchpad%20Mini.png?raw=true" },
+            { manufacturer: "Novation", model: "Launchpad MK1", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "No", dimensions: "240 x 240", jogWheels: "No", jogWheelDiameter: "-", msrp: 149, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/80_Novation_Launchpad%20MK1.png?raw=true" },
+            { manufacturer: "Novation", model: "Launchpad MK2", supportLevel: "Community Supported", year: 2015, allInOne: "No", sync: "No", dimensions: "240 x 240", jogWheels: "No", jogWheelDiameter: "-", msrp: 169, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/81_Novation_Launchpad%20MK2.png?raw=true" },
+            { manufacturer: "Novation", model: "Twitch", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "356 x 267", jogWheels: "No", jogWheelDiameter: "-", msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/82_Novation_Twitch.png?raw=true" },
+            { manufacturer: "Numark", model: "DJ2GO", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "297 x 84", jogWheels: "Yes", jogWheelDiameter: 70, msrp: 59, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/83_Numark_DJ2GO.png?raw=true" },
+            { manufacturer: "Numark", model: "DJ2GO2 Touch", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "314 x 86", jogWheels: "Yes", jogWheelDiameter: 70, msrp: 79, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/84_Numark_DJ2GO2%20Touch.png?raw=true" },
+            { manufacturer: "Numark", model: "iDJ Live II", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "420 x 193", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 99, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/85_Numark_iDJ%20Live%20II.png?raw=true" },
+            { manufacturer: "Numark", model: "Mixtrack", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "476 x 298", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 149, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/86_Numark_Mixtrack.png?raw=true" },
+            { manufacturer: "Numark", model: "Mixtrack Platinum", supportLevel: "Community Supported", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "549 x 231", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/87_Numark_Mixtrack%20Platinum.png?raw=true" },
+            { manufacturer: "Numark", model: "Mixtrack Platinum FX", supportLevel: "Community Supported", year: 2020, allInOne: "Yes", sync: "Yes", dimensions: "536 x 246", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 279, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/88_Numark_Mixtrack%20Platinum%20FX.png?raw=true" },
+            { manufacturer: "Numark", model: "Mixtrack Pro", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "476 x 298", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/89_Numark_Mixtrack%20Pro.png?raw=true" },
+            { manufacturer: "Numark", model: "Mixtrack (Pro) 3", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "550 x 232", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 199, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/90_Numark_Mixtrack%20(Pro)%203.png?raw=true" },
+            { manufacturer: "Numark", model: "Mixtrack Pro FX", supportLevel: "Community Supported", year: 2020, allInOne: "Yes", sync: "Yes", dimensions: "536 x 246", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 229, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/91_Numark_Mixtrack%20Pro%20FX.png?raw=true" },
+            { manufacturer: "Numark", model: "Mixtrack Pro II", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "464 x 264", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 229, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/92_Numark_Mixtrack%20Pro%20II.png?raw=true" },
+            { manufacturer: "Numark", model: "N4", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "572 x 305", jogWheels: "Yes", jogWheelDiameter: 150, msrp: 399, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/93_Numark_N4.png?raw=true" },
+            { manufacturer: "Numark", model: "NS6II", supportLevel: "Community Supported", year: 2017, allInOne: "Yes", sync: "Yes", dimensions: "560 x 360", jogWheels: "Yes", jogWheelDiameter: 133, msrp: 799, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/94_Numark_NS6II.png?raw=true" },
+            { manufacturer: "Numark", model: "NS7", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "762 x 399", jogWheels: "Yes", jogWheelDiameter: 178, msrp: 1299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/95_Numark_NS7.png?raw=true" },
+            { manufacturer: "Numark", model: "Omni Control", supportLevel: "Community Supported", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "356 x 267", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/96_Numark_Omni%20Control.png?raw=true" },
+            { manufacturer: "Numark", model: "Party Mix", supportLevel: "Community Supported", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "326 x 199", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 99, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/97_Numark_Party%20Mix.png?raw=true" },
+            { manufacturer: "Numark", model: "Scratch", supportLevel: "Community Supported", year: 2018, allInOne: "No", sync: "No", dimensions: "242 x 308", jogWheels: "No", jogWheelDiameter: "-", msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/98_Numark_Scratch.png?raw=true" },
+            { manufacturer: "Numark", model: "Total Control", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "305 x 267", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 199, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/99_Numark_Total%20Control.png?raw=true" },
+            { manufacturer: "Numark", model: "V7", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "305 x 368", jogWheels: "Yes", jogWheelDiameter: 178, msrp: 599, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/100_Numark_V7.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "CDJ-2000", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "Yes", dimensions: "320 x 406", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 1899, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/101_Pioneer%20DJ_CDJ-2000.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "CDJ-350", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "220 x 289", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/102_Pioneer%20DJ_CDJ-350.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "CDJ-850", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "305 x 364", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 899, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/103_Pioneer%20DJ_CDJ-850.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-200", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "378 x 208", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 149, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/104_Pioneer%20DJ_DDJ-200.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-400", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "482 x 272", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/105_Pioneer%20DJ_DDJ-400.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-FLX4", supportLevel: "Community Supported", year: 2022, allInOne: "Yes", sync: "Yes", dimensions: "482 x 273", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/106_Pioneer%20DJ_DDJ-FLX4.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-SB", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "487 x 271", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/107_Pioneer%20DJ_DDJ-SB.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-SB2", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "487 x 271", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/108_Pioneer%20DJ_DDJ-SB2.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-SB3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "483 x 272", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/108_Pioneer%20DJ_DDJ-SB2.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-SX", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "664 x 357", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 999, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/110_Pioneer%20DJ_DDJ-SX.png?raw=true" },
+            { manufacturer: "Reloop", model: "Beatmix 2", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "492 x 317", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/111_Reloop_Beatmix%202.png?raw=true" },
+            { manufacturer: "Reloop", model: "Beatmix 4", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "558 x 317", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/112_Reloop_Beatmix%204.png?raw=true" },
+            { manufacturer: "Reloop", model: "Beatpad", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "460 x 325", jogWheels: "Yes", jogWheelDiameter: 155, msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/112_Reloop_Beatmix%204.png?raw=true" },
+            { manufacturer: "Reloop", model: "Digital Jockey 2 CE", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 349, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/114_Reloop_Digital%20Jockey%202%20CE.png?raw=true" },
+            { manufacturer: "Reloop", model: "Digital Jockey 2 IE", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 449, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/115_Reloop_Digital%20Jockey%202%20IE.png?raw=true" },
+            { manufacturer: "Reloop", model: "Digital Jockey 2 ME", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/116_Reloop_Digital%20Jockey%202%20ME.png?raw=true" },
+            { manufacturer: "Reloop", model: "Jockey 3 ME", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "420 x 300", jogWheels: "Yes", jogWheelDiameter: 155, msrp: 699, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/117_Reloop_Jockey%203%20ME.png?raw=true" },
+            { manufacturer: "Reloop", model: "Mixage", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "370 x 265", jogWheels: "Yes", jogWheelDiameter: 105, msrp: 229, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/118_Reloop_Mixage.png?raw=true" },
+            { manufacturer: "Reloop", model: "Terminal Mix 2/4", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "515 x 320", jogWheels: "Yes", jogWheelDiameter: 155, msrp: 599, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/119_Reloop_Terminal%20Mix%202:4.png?raw=true" },
+            { manufacturer: "Roland", model: "DJ-505", supportLevel: "Community Supported", year: 2017, allInOne: "Yes", sync: "Yes", dimensions: "530 x 402", jogWheels: "Yes", jogWheelDiameter: 144, msrp: 699, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/120_Roland_DJ-505.png?raw=true" },
+            { manufacturer: "Sony", model: "Sixxaxis", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "157 x 95", jogWheels: "No", jogWheelDiameter: "-", msrp: 59, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/121_Sony_Sixaxis.png?raw=true" },
+            { manufacturer: "Soundless", model: "Studio joyMIDI", supportLevel: "Community Supported", year: "N/A", allInOne: "No", sync: "No", dimensions: "N/A", jogWheels: "No", jogWheelDiameter: "-", msrp: null, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/122_Soundless_Studio%20joyMIDI.png?raw=true" },
+            { manufacturer: "Stanton", model: "DJC.4", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "410 x 280", jogWheels: "Yes", jogWheelDiameter: 130, msrp: 399, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/123_Stanton_DJC.4.png?raw=true" },
+            { manufacturer: "Stanton", model: "SCS.1d", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "Yes", dimensions: "273 x 368", jogWheels: "Yes", jogWheelDiameter: 254, msrp: 999, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/124_Stanton_SCS.1d.png?raw=true" },
+            { manufacturer: "Stanton", model: "SCS.1m", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "218 x 368", jogWheels: "No", jogWheelDiameter: "-", msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/125_Stanton_SCS.1m.png?raw=true" },
+            { manufacturer: "Stanton", model: "SCS.3d “DaScratch”", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "134 x 264", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/126_Stanton_SCS.3d%20%E2%80%9CDaScratch%E2%80%9D.png?raw=true" },
+            { manufacturer: "Stanton", model: "SCS.3m “DaMix”", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "134 x 264", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/127_Stanton_SCS.3m%20%E2%80%9CDaMix%E2%80%9D.png?raw=true" },
+            { manufacturer: "Tascam", model: "US-428", supportLevel: "Community Supported", year: 2000, allInOne: "Yes", sync: "No", dimensions: "432 x 292", jogWheels: "Yes", jogWheelDiameter: "N/A", msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/128_Tascam_US-428.png?raw=true" },
+            { manufacturer: "TrakProDJ", model: "TrakProDJ", supportLevel: "Community Supported", year: "N/A", allInOne: "No", sync: "No", dimensions: "N/A", jogWheels: "No", jogWheelDiameter: "-", msrp: null, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/129_TrakProDJ_TrakProDJ.png?raw=true" },
+            { manufacturer: "Vestax", model: "Spin", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "358 x 241", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/130_Vestax_Spin.png?raw=true" },
+            { manufacturer: "Vestax", model: "Typhoon", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "356 x 241", jogWheels: "Yes", jogWheelDiameter: 120, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/131_Vestax_Typhoon.png?raw=true" },
+            { manufacturer: "Vestax", model: "VCI-100 (MixVibes 3DEX)", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "No", dimensions: "360 x 254", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 499, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/132_Vestax_VCI-100%20(MixVibes%203DEX).png?raw=true" },
+            { manufacturer: "Vestax", model: "VCI-100 MKI", supportLevel: "Community Supported", year: 2006, allInOne: "Yes", sync: "No", dimensions: "360 x 254", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 499, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/133_Vestax_VCI-100%20MKI.png?raw=true" },
+            { manufacturer: "Vestax", model: "VCI-100 MKII", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "368 x 268", jogWheels: "Yes", jogWheelDiameter: 115, msrp: 599, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/134_Vestax_VCI-100%20MKII.png?raw=true" },
+            { manufacturer: "Vestax", model: "VCI-300", supportLevel: "Community Supported", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "410 x 275", jogWheels: "Yes", jogWheelDiameter: 135, msrp: 699, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/134_Vestax_VCI-100%20MKII.png?raw=true" },
+            { manufacturer: "Vestax", model: "VCI-400", supportLevel: "Community Supported", year: 2011, allInOne: "Yes", sync: "Yes", dimensions: "457 x 328", jogWheels: "Yes", jogWheelDiameter: 135, msrp: 899, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/136_Vestax_VCI-400.png?raw=true" },
+            { manufacturer: "Yaeltex", model: "MiniMixxx", supportLevel: "Community Supported", year: "N/A", allInOne: "No", sync: "No", dimensions: "N/A", jogWheels: "No", jogWheelDiameter: "-", msrp: null, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/137_Yaeltex_MiniMixxx.png?raw=true" }
         ];
 
         let charts = {};
@@ -530,20 +534,22 @@
         
         function updateChartStyles(isDarkMode) {
             const gridColor = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-            const textColor = isDarkMode ? '#e2e8f0' : '#1e293b';
+            const textColor = isDarkMode ? '#e2e8f0' : '#334155';
             
             Chart.defaults.color = textColor;
             Chart.defaults.borderColor = gridColor;
 
             Object.values(charts).forEach(chart => {
                 if(chart) {
-                    if (chart.options.scales && chart.options.scales.x && chart.options.scales.y) {
+                    if (chart.options.scales.x) {
                         chart.options.scales.x.ticks.color = textColor;
                         chart.options.scales.x.grid.color = gridColor;
+                    }
+                     if (chart.options.scales.y) {
                         chart.options.scales.y.ticks.color = textColor;
                         chart.options.scales.y.grid.color = gridColor;
                     }
-                    if(chart.options.plugins && chart.options.plugins.legend) {
+                    if(chart.options.plugins.legend) {
                         chart.options.plugins.legend.labels.color = textColor;
                     }
                     chart.update();
@@ -573,7 +579,7 @@
             document.getElementById('manufacturer').addEventListener('change', applyFiltersAndRender);
             document.getElementById('sort').addEventListener('change', applyFiltersAndRender);
             document.getElementById('reset-filters').addEventListener('click', resetFilters);
-            document.querySelectorAll('.feature-filter, .support-filter').forEach(el => {
+            document.querySelectorAll('.feature-filter, .support-filter, .soundcard-filter').forEach(el => {
                 el.addEventListener('change', applyFiltersAndRender);
             });
             document.getElementById('min-jog-wheel').addEventListener('input', handleSliderInput);
@@ -598,16 +604,16 @@
             minSlider.value = minJogWheel;
             maxSlider.value = maxJogWheel;
             
-            updateSliderUI('jog-wheel', minJogWheel, maxJogWheel);
+            updateJogWheelSliderUI();
         }
         
         function setupMsrpSlider() {
-            const msrps = data
+            const prices = data
                 .map(c => c.msrp)
                 .filter(p => p !== null);
             
-            minMsrp = Math.min(...msrps);
-            maxMsrp = Math.max(...msrps);
+            minMsrp = Math.min(...prices);
+            maxMsrp = Math.max(...prices);
 
             const minSlider = document.getElementById('min-msrp');
             const maxSlider = document.getElementById('max-msrp');
@@ -617,7 +623,7 @@
             minSlider.value = minMsrp;
             maxSlider.value = maxMsrp;
             
-            updateSliderUI('msrp', minMsrp, maxMsrp);
+            updateMsrpSliderUI();
         }
 
         function handleSliderInput() {
@@ -626,32 +632,46 @@
             if (parseInt(minSlider.value) > parseInt(maxSlider.value)) {
                 [minSlider.value, maxSlider.value] = [maxSlider.value, minSlider.value];
             }
-            updateSliderUI('jog-wheel', minJogWheel, maxJogWheel);
+            updateJogWheelSliderUI();
             applyFiltersAndRender();
         }
-        
+
         function handleMsrpSliderInput() {
             const minSlider = document.getElementById('min-msrp');
             const maxSlider = document.getElementById('max-msrp');
             if (parseInt(minSlider.value) > parseInt(maxSlider.value)) {
                 [minSlider.value, maxSlider.value] = [maxSlider.value, minSlider.value];
             }
-            updateSliderUI('msrp', minMsrp, maxMsrp);
+            updateMsrpSliderUI();
             applyFiltersAndRender();
         }
 
-        function updateSliderUI(type, minVal, maxVal) {
-            const minSlider = document.getElementById(`min-${type}`);
-            const maxSlider = document.getElementById(`max-${type}`);
-            const rangeDisplay = document.getElementById(`${type}-range-display`);
-            const rangeColor = document.getElementById(`${type === 'jog-wheel' ? 'slider-range-color' : 'msrp-slider-range-color'}`);
+        function updateJogWheelSliderUI() {
+            const minSlider = document.getElementById('min-jog-wheel');
+            const maxSlider = document.getElementById('max-jog-wheel');
+            const rangeDisplay = document.getElementById('jog-wheel-range-display');
+            const rangeColor = document.getElementById('jog-wheel-slider-range-color');
 
-            const minPercent = ((minSlider.value - minVal) / (maxVal - minVal)) * 100;
-            const maxPercent = ((maxSlider.value - minVal) / (maxVal - minVal)) * 100;
+            const minPercent = ((minSlider.value - minJogWheel) / (maxJogWheel - minJogWheel)) * 100;
+            const maxPercent = ((maxSlider.value - minJogWheel) / (maxJogWheel - minJogWheel)) * 100;
 
             rangeColor.style.left = `${minPercent}%`;
             rangeColor.style.width = `${maxPercent - minPercent}%`;
             rangeDisplay.textContent = `${minSlider.value} - ${maxSlider.value}`;
+        }
+
+        function updateMsrpSliderUI() {
+            const minSlider = document.getElementById('min-msrp');
+            const maxSlider = document.getElementById('max-msrp');
+            const rangeDisplay = document.getElementById('msrp-range-display');
+            const rangeColor = document.getElementById('msrp-slider-range-color');
+
+            const minPercent = ((minSlider.value - minMsrp) / (maxMsrp - minMsrp)) * 100;
+            const maxPercent = ((maxSlider.value - minMsrp) / (maxMsrp - minMsrp)) * 100;
+
+            rangeColor.style.left = `${minPercent}%`;
+            rangeColor.style.width = `${maxPercent - minPercent}%`;
+            rangeDisplay.textContent = `$${minSlider.value} - $${maxSlider.value}`;
         }
 
         function populateManufacturers() {
@@ -674,8 +694,8 @@
                 allInOne: document.getElementById('filter-allinone').checked,
                 jogWheels: document.getElementById('filter-jogwheels').checked,
                 sync: document.getElementById('filter-sync').checked,
-                soundCard: document.getElementById('filter-soundcard').checked,
-                linuxCompatible: document.getElementById('filter-linux').checked,
+                hasSoundcard: document.getElementById('filter-soundcard').checked,
+                linuxSupport: document.getElementById('filter-linux').checked,
                 supportLevels: supportFilters.length > 0 ? supportFilters : null,
                 minJog: parseInt(document.getElementById('min-jog-wheel').value),
                 maxJog: parseInt(document.getElementById('max-jog-wheel').value),
@@ -703,11 +723,11 @@
             if (filters.sync) {
                 filteredData = filteredData.filter(c => c.sync === 'Yes');
             }
-            if (filters.soundCard) {
-                filteredData = filteredData.filter(c => c.integratedSoundCard === 'Yes');
+            if (filters.hasSoundcard) {
+                filteredData = filteredData.filter(c => c.hasSoundcard === 'Yes');
             }
-            if (filters.linuxCompatible) {
-                filteredData = filteredData.filter(c => c.linuxCompatible.startsWith('Yes'));
+            if (filters.linuxSupport) {
+                filteredData = filteredData.filter(c => c.linuxSupport === 'Yes');
             }
             if (filters.supportLevels) {
                 filteredData = filteredData.filter(c => filters.supportLevels.includes(c.supportLevel));
@@ -720,7 +740,7 @@
                     return c.jogWheelDiameter >= filters.minJog && c.jogWheelDiameter <= filters.maxJog;
                 });
             }
-            
+
             const isMsrpSliderActive = filters.minMsrp > minMsrp || filters.maxMsrp < maxMsrp;
             if (isMsrpSliderActive) {
                  filteredData = filteredData.filter(c => {
@@ -754,14 +774,6 @@
                         if (a.jogWheelDiameter === null) return 1;
                         if (b.jogWheelDiameter === null) return -1;
                         return a.jogWheelDiameter - b.jogWheelDiameter;
-                    case 'msrp-desc':
-                        if (a.msrp === null) return 1;
-                        if (b.msrp === null) return -1;
-                        return b.msrp - a.msrp;
-                    case 'msrp-asc':
-                        if (a.msrp === null) return 1;
-                        if (b.msrp === null) return -1;
-                        return a.msrp - b.msrp;
                     case 'manufacturer-asc':
                     default:
                         return a.manufacturer.localeCompare(b.manufacturer);
@@ -785,28 +797,32 @@
 
             data.forEach(c => {
                 const card = document.createElement('div');
-                card.className = 'bg-white dark:bg-slate-800 p-5 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col';
+                card.className = 'bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden';
                 
                 const supportClass = c.supportLevel === 'Mixxx Certified' ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' : 'bg-sky-100 text-sky-800 dark:bg-sky-900/50 dark:text-sky-300';
                 const supportText = c.supportLevel === 'Mixxx Certified' ? 'Mixxx' : 'Community';
 
                 card.innerHTML = `
-                    <div class="flex-grow">
-                        <div class="flex justify-between items-start">
-                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">${c.model}</h3>
-                            <span class="text-xs font-semibold px-2 py-1 rounded-full ${supportClass}">${supportText}</span>
-                        </div>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">${c.manufacturer} &bull; ${c.year || 'N/A'}</p>
-
-                        <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm mb-4">
-                            <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">All-in-one:</span> <span class="text-slate-800 dark:text-slate-300">${c.allInOne}</span></div>
-                            <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Sync:</span> <span class="text-slate-800 dark:text-slate-300">${c.sync}</span></div>
-                            <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Jog Wheels:</span> <span class="text-slate-800 dark:text-slate-300">${c.jogWheels}</span></div>
-                            <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Jog Ø:</span> <span class="text-slate-800 dark:text-slate-300">${c.jogWheelDiameter !== null ? c.jogWheelDiameter + ' mm' : '-'}</span></div>
-                        </div>
-                        <p class="text-sm"><span class="font-semibold text-slate-600 dark:text-slate-400">MSRP:</span> <span class="text-slate-800 dark:text-slate-300">${c.msrp !== null ? '$' + c.msrp : 'N/A'}</span></p>
+                    <div class="bg-slate-100 dark:bg-slate-900/50">
+                        <img src="${c.imageUrl}" alt="${c.manufacturer} ${c.model}" class="w-full h-48 object-contain p-4" onerror="this.onerror=null;this.src='https://placehold.co/300x300/e2e8f0/475569?text=Image+Not+Found';">
                     </div>
-                    <div class="text-xs text-slate-400 dark:text-slate-500 border-t border-slate-200 dark:border-slate-700 pt-3 mt-auto">Dimensions: ${c.dimensions !== 'Not available' ? c.dimensions + ' mm' : '-'}</div>
+                    <div class="p-5 flex-grow flex flex-col">
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-lg font-bold text-slate-900 dark:text-white">${c.model}</h3>
+                                <span class="text-xs font-semibold px-2 py-1 rounded-full ${supportClass} flex-shrink-0 ml-2">${supportText}</span>
+                            </div>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">${c.manufacturer} &bull; ${c.year || 'N/A'}</p>
+
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm mb-4">
+                                <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">All-in-one:</span> <span class="text-slate-800 dark:text-slate-300">${c.allInOne}</span></div>
+                                <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Sync:</span> <span class="text-slate-800 dark:text-slate-300">${c.sync}</span></div>
+                                <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Jog Wheels:</span> <span class="text-slate-800 dark:text-slate-300">${c.jogWheels}</span></div>
+                                <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Jog Ø:</span> <span class="text-slate-800 dark:text-slate-300">${c.jogWheelDiameter !== null ? c.jogWheelDiameter + ' mm' : '-'}</span></div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-slate-400 dark:text-slate-500 border-t border-slate-200 dark:border-slate-700 pt-3 mt-auto">Dimensions: ${c.dimensions !== 'Not available' ? c.dimensions + ' mm' : '-'}</div>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
@@ -816,19 +832,19 @@
             document.getElementById('search').value = '';
             document.getElementById('manufacturer').value = 'all';
             document.getElementById('sort').value = 'manufacturer-asc';
-            document.querySelectorAll('.feature-filter, .support-filter').forEach(el => el.checked = false);
+            document.querySelectorAll('.feature-filter, .support-filter, .soundcard-filter').forEach(el => el.checked = false);
             
             const minJogSlider = document.getElementById('min-jog-wheel');
             const maxJogSlider = document.getElementById('max-jog-wheel');
             minJogSlider.value = minJogWheel;
             maxJogSlider.value = maxJogWheel;
-            updateSliderUI('jog-wheel', minJogWheel, maxJogWheel);
+            updateJogWheelSliderUI();
 
             const minMsrpSlider = document.getElementById('min-msrp');
             const maxMsrpSlider = document.getElementById('max-msrp');
             minMsrpSlider.value = minMsrp;
             maxMsrpSlider.value = maxMsrp;
-            updateSliderUI('msrp', minMsrp, maxMsrp);
+            updateMsrpSliderUI();
 
             applyFiltersAndRender();
         }
