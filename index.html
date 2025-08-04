@@ -154,6 +154,25 @@
                         </select>
                     </div>
 
+                    <!-- Year Release Filter -->
+                    <div class="filter-section">
+                        <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Year Released <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
+                        <div class="mt-2 space-y-4">
+                             <div id="year-slider-container" class="space-y-2 pt-2">
+                                <div class="flex justify-between items-center text-sm">
+                                    <label class="font-medium text-slate-600 dark:text-slate-400">Year</label>
+                                    <span id="year-range-display" class="font-mono text-slate-500 dark:text-slate-400"></span>
+                                </div>
+                                <div class="slider-container">
+                                    <div class="slider-track"></div>
+                                    <div id="year-slider-range-color" class="slider-range"></div>
+                                    <input type="range" id="min-year" class="range-slider">
+                                    <input type="range" id="max-year" class="range-slider">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Feature Filters -->
                     <div class="filter-section">
                         <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Features <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
@@ -220,7 +239,7 @@
 
                     <!-- Price Filter -->
                     <div class="filter-section">
-                        <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Price <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
+                        <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Price Upon Release <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
                         <div class="mt-2 space-y-4">
                              <div id="msrp-slider-container" class="space-y-2 pt-2">
                                 <div class="flex justify-between items-center text-sm">
@@ -249,6 +268,8 @@
                             <option value="year-asc">Year of Release (Oldest)</option>
                             <option value="jogwheel-desc">Jog Wheel Size (Largest)</option>
                             <option value="jogwheel-asc">Jog Wheel Size (Smallest)</option>
+                            <option value="msrp-desc">MSRP (Highest to Lowest)</option>
+                            <option value="msrp-asc">MSRP (Lowest to Highest)</option>
                         </select>
                     </div>
                 </div>
@@ -276,7 +297,7 @@
             <section id="charts-section">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Market Overview</h2>
-                    <p class="mt-2 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">These charts provide a high-level look at the DJ controllers mapped with Mixxx (including breakdowns of Manufacturer and Release Year).</p>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">These charts provide a high-level look at the DJ controllers mapped with Mixxx (including breakdowns by Manufacturer and Release Year).</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
                     <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700 col-span-1 md:col-span-2">
@@ -320,7 +341,7 @@
             <section id="controllers-grid">
                  <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-slate-900 dark:text-white">Controller Database</h2>
-                    <p class="mt-2 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Here you can browse a list of Mixxx compatible controllers. Use the filters on the left to narrow your search and find the perfect hardware for you.</p>
+                    <p class="mt-2 text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Here you can browse a list of Mixxx compatible controllers. Use the filters on the left to narrow your search and find the right hardware for you.</p>
                 </div>
                 <div id="grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
                     <!-- Controller cards will be injected here -->
@@ -440,7 +461,7 @@
             { manufacturer: "Pioneer DJ", model: "CDJ-2000", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "Yes", dimensions: "320 x 406", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 1899, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/101_Pioneer%20DJ_CDJ-2000.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "CDJ-350", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "220 x 289", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/102_Pioneer%20DJ_CDJ-350.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "CDJ-850", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "305 x 364", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 899, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/103_Pioneer%20DJ_CDJ-850.png?raw=true" },
-            { manufacturer: "Pioneer DJ", model: "DDJ-200", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "378 x 208", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 149, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/104_Pioneer%20DJ_DDJ-200.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-200", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "378 x 208", jogWheels: "Yes", jogWheelDiameter: 80, msrp: 149, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/104_Pioneer%20DJ_DDJ-200.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "DDJ-400", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "482 x 272", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/105_Pioneer%20DJ_DDJ-400.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "DDJ-FLX4", supportLevel: "Community Supported", year: 2022, allInOne: "Yes", sync: "Yes", dimensions: "482 x 273", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/106_Pioneer%20DJ_DDJ-FLX4.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "DDJ-SB", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "487 x 271", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/107_Pioneer%20DJ_DDJ-SB.png?raw=true" },
@@ -464,7 +485,7 @@
             { manufacturer: "Stanton", model: "SCS.1m", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "218 x 368", jogWheels: "No", jogWheelDiameter: "-", msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/125_Stanton_SCS.1m.png?raw=true" },
             { manufacturer: "Stanton", model: "SCS.3d “DaScratch”", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "134 x 264", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/126_Stanton_SCS.3d%20%E2%80%9CDaScratch%E2%80%9D.png?raw=true" },
             { manufacturer: "Stanton", model: "SCS.3m “DaMix”", supportLevel: "Community Supported", year: 2008, allInOne: "No", sync: "No", dimensions: "134 x 264", jogWheels: "No", jogWheelDiameter: "-", msrp: 199, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/127_Stanton_SCS.3m%20%E2%80%9CDaMix%E2%80%9D.png?raw=true" },
-            { manufacturer: "Tascam", model: "US-428", supportLevel: "Community Supported", year: 2000, allInOne: "Yes", sync: "No", dimensions: "432 x 292", jogWheels: "Yes", jogWheelDiameter: "N/A", msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/128_Tascam_US-428.png?raw=true" },
+            { manufacturer: "Tascam", model: "US-428", supportLevel: "Community Supported", year: 2000, allInOne: "Yes", sync: "No", dimensions: "432 x 292", jogWheels: "No", jogWheelDiameter: "N/A", msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/128_Tascam_US-428.png?raw=true" },
             { manufacturer: "TrakProDJ", model: "TrakProDJ", supportLevel: "Community Supported", year: "N/A", allInOne: "No", sync: "No", dimensions: "N/A", jogWheels: "No", jogWheelDiameter: "-", msrp: null, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/129_TrakProDJ_TrakProDJ.png?raw=true" },
             { manufacturer: "Vestax", model: "Spin", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "358 x 241", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/130_Vestax_Spin.png?raw=true" },
             { manufacturer: "Vestax", model: "Typhoon", supportLevel: "Community Supported", year: 2010, allInOne: "Yes", sync: "Yes", dimensions: "356 x 241", jogWheels: "Yes", jogWheelDiameter: 120, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/131_Vestax_Typhoon.png?raw=true" },
@@ -477,7 +498,7 @@
         ];
 
         let charts = {};
-        let minJogWheel, maxJogWheel, minMsrp, maxMsrp;
+        let minJogWheel, maxJogWheel, minMsrp, maxMsrp, minYear, maxYear;
         let data = [];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -485,6 +506,7 @@
             populateManufacturers();
             setupJogWheelSlider();
             setupMsrpSlider();
+            setupYearSlider();
             setupEventListeners();
             initializeTheme();
             applyFiltersAndRender();
@@ -584,6 +606,8 @@
             document.getElementById('max-jog-wheel').addEventListener('input', handleSliderInput);
             document.getElementById('min-msrp').addEventListener('input', handleMsrpSliderInput);
             document.getElementById('max-msrp').addEventListener('input', handleMsrpSliderInput);
+            document.getElementById('min-year').addEventListener('input', handleYearSliderInput);
+            document.getElementById('max-year').addEventListener('input', handleYearSliderInput);
         }
 
         function setupJogWheelSlider() {
@@ -624,6 +648,25 @@
             updateMsrpSliderUI();
         }
 
+        function setupYearSlider() {
+            const years = data
+                .map(c => c.year)
+                .filter(y => y !== null);
+            
+            minYear = Math.min(...years);
+            maxYear = Math.max(...years);
+
+            const minSlider = document.getElementById('min-year');
+            const maxSlider = document.getElementById('max-year');
+
+            minSlider.min = maxSlider.min = minYear;
+            minSlider.max = maxSlider.max = maxYear;
+            minSlider.value = minYear;
+            maxSlider.value = maxYear;
+            
+            updateYearSliderUI();
+        }
+
         function handleSliderInput() {
             const minSlider = document.getElementById('min-jog-wheel');
             const maxSlider = document.getElementById('max-jog-wheel');
@@ -641,6 +684,16 @@
                 [minSlider.value, maxSlider.value] = [maxSlider.value, minSlider.value];
             }
             updateMsrpSliderUI();
+            applyFiltersAndRender();
+        }
+
+        function handleYearSliderInput() {
+            const minSlider = document.getElementById('min-year');
+            const maxSlider = document.getElementById('max-year');
+            if (parseInt(minSlider.value) > parseInt(maxSlider.value)) {
+                [minSlider.value, maxSlider.value] = [maxSlider.value, minSlider.value];
+            }
+            updateYearSliderUI();
             applyFiltersAndRender();
         }
 
@@ -672,6 +725,20 @@
             rangeDisplay.textContent = `$${minSlider.value} - $${maxSlider.value}`;
         }
 
+        function updateYearSliderUI() {
+            const minSlider = document.getElementById('min-year');
+            const maxSlider = document.getElementById('max-year');
+            const rangeDisplay = document.getElementById('year-range-display');
+            const rangeColor = document.getElementById('year-slider-range-color');
+
+            const minPercent = ((minSlider.value - minYear) / (maxYear - minYear)) * 100;
+            const maxPercent = ((maxSlider.value - minYear) / (maxYear - minYear)) * 100;
+
+            rangeColor.style.left = `${minPercent}%`;
+            rangeColor.style.width = `${maxPercent - minPercent}%`;
+            rangeDisplay.textContent = `${minSlider.value} - ${maxSlider.value}`;
+        }
+
         function populateManufacturers() {
             const manufacturers = [...new Set(data.map(c => c.manufacturer))].sort();
             const select = document.getElementById('manufacturer');
@@ -699,6 +766,8 @@
                 maxJog: parseInt(document.getElementById('max-jog-wheel').value),
                 minMsrp: parseInt(document.getElementById('min-msrp').value),
                 maxMsrp: parseInt(document.getElementById('max-msrp').value),
+                minYear: parseInt(document.getElementById('min-year').value),
+                maxYear: parseInt(document.getElementById('max-year').value),
             };
         }
 
@@ -747,6 +816,14 @@
                 });
             }
 
+            const isYearSliderActive = filters.minYear > minYear || filters.maxYear < maxYear;
+            if (isYearSliderActive) {
+                 filteredData = filteredData.filter(c => {
+                    if (c.year === null) return false;
+                    return c.year >= filters.minYear && c.year <= filters.maxYear;
+                });
+            }
+
             sortData(filteredData, filters.sort);
             renderGrid(filteredData);
             updateCharts(filteredData);
@@ -772,6 +849,14 @@
                         if (a.jogWheelDiameter === null) return 1;
                         if (b.jogWheelDiameter === null) return -1;
                         return a.jogWheelDiameter - b.jogWheelDiameter;
+                    case 'msrp-desc':
+                        if (a.msrp === null) return 1;
+                        if (b.msrp === null) return -1;
+                        return b.msrp - a.msrp;
+                    case 'msrp-asc':
+                        if (a.msrp === null) return 1;
+                        if (b.msrp === null) return -1;
+                        return a.msrp - b.msrp;
                     case 'manufacturer-asc':
                     default:
                         return a.manufacturer.localeCompare(b.manufacturer);
@@ -810,13 +895,15 @@
                                 <h3 class="text-lg font-bold text-slate-900 dark:text-white">${c.model}</h3>
                                 <span class="text-xs font-semibold px-2 py-1 rounded-full ${supportClass} flex-shrink-0 ml-2">${supportText}</span>
                             </div>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">${c.manufacturer} &bull; ${c.year || 'N/A'}</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">${c.manufacturer}</p>
 
                             <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm mb-4">
                                 <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">All-in-one:</span> <span class="text-slate-800 dark:text-slate-300">${c.allInOne}</span></div>
                                 <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Sync:</span> <span class="text-slate-800 dark:text-slate-300">${c.sync}</span></div>
                                 <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Jog Wheels:</span> <span class="text-slate-800 dark:text-slate-300">${c.jogWheels}</span></div>
                                 <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Jog Ø:</span> <span class="text-slate-800 dark:text-slate-300">${c.jogWheelDiameter !== null ? c.jogWheelDiameter + ' mm' : '-'}</span></div>
+                                <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">Year:</span> <span class="text-slate-800 dark:text-slate-300">${c.year || 'N/A'}</span></div>
+                                <div class="flex items-center"><span class="font-semibold mr-2 text-slate-600 dark:text-slate-400">MSRP:</span> <span class="text-slate-800 dark:text-slate-300">${c.msrp !== null ? '$' + c.msrp : 'N/A'}</span></div>
                             </div>
                         </div>
                         <div class="text-xs text-slate-400 dark:text-slate-500 border-t border-slate-200 dark:border-slate-700 pt-3 mt-auto">Dimensions: ${c.dimensions !== 'Not available' ? c.dimensions + ' mm' : '-'}</div>
@@ -843,6 +930,12 @@
             minMsrpSlider.value = minMsrp;
             maxMsrpSlider.value = maxMsrp;
             updateMsrpSliderUI();
+
+            const minYearSlider = document.getElementById('min-year');
+            const maxYearSlider = document.getElementById('max-year');
+            minYearSlider.value = minYear;
+            maxYearSlider.value = maxYear;
+            updateYearSliderUI();
 
             applyFiltersAndRender();
         }
@@ -953,7 +1046,8 @@
         function updateFeatureChart(data, chartId, feature, label) {
             const ctx = document.getElementById(chartId).getContext('2d');
             const yesCount = data.filter(c => c[feature] === 'Yes').length;
-            const noCount = data.length - yesCount;
+            const total = data.length;
+            const noCount = total - yesCount;
             
             const chartData = {
                 labels: ['Yes', 'No'],
@@ -978,6 +1072,32 @@
                 plugins: {
                     legend: {
                         position: 'top',
+                        labels: {
+                            generateLabels: function(chart) {
+                                const data = chart.data;
+                                if (data.labels.length && data.datasets.length) {
+                                    const {labels, datasets} = data;
+                                    const isDarkMode = document.documentElement.classList.contains('dark');
+                                    const textColor = isDarkMode ? '#e2e8f0' : '#334155';
+                                    return labels.map((label, i) => {
+                                        const ds = datasets[0];
+                                        const value = ds.data[i];
+                                        const total = ds.data.reduce((a, b) => a + b, 0);
+                                        const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                        return {
+                                            text: `${label} (${percentage}%)`,
+                                            fillStyle: ds.backgroundColor[i],
+                                            strokeStyle: ds.borderColor[i],
+                                            lineWidth: ds.borderWidth,
+                                            hidden: isNaN(ds.data[i]) || chart.getDatasetMeta(0).data[i].hidden,
+                                            index: i,
+                                            fontColor: textColor
+                                        };
+                                    });
+                                }
+                                return [];
+                            }
+                        }
                     },
                 },
                 onClick: (e) => {
@@ -991,7 +1111,7 @@
                         
                         if (checkboxId) {
                             const checkbox = document.getElementById(checkboxId);
-                            checkbox.checked = clickedLabel === 'Yes';
+                            checkbox.checked = clickedLabel.startsWith('Yes');
                             applyFiltersAndRender();
                         }
                     }
