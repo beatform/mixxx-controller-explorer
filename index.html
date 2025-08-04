@@ -126,9 +126,9 @@
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
 
-    <div class="flex flex-col lg:flex-row min-h-screen">
+    <div class="flex flex-col lg:flex-row h-screen overflow-hidden">
         <!-- Sidebar -->
-        <aside class="w-full lg:w-80 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 p-6 flex-shrink-0">
+        <aside class="w-full lg:w-80 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 p-6 flex-shrink-0 overflow-y-auto">
             <div class="space-y-8 sticky top-6">
                 <header>
                     <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Controller Explorer</h1>
@@ -279,7 +279,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-6 lg:p-8 relative">
+        <main class="flex-1 p-6 lg:p-8 relative overflow-y-auto">
             <!-- Dark Mode Toggle -->
             <div class="absolute top-6 right-6 flex items-center space-x-2 text-slate-500 dark:text-slate-400">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
@@ -1070,40 +1070,28 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.raw;
+                                const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                                return `${value} controllers (${percentage}%)`;
+                            }
+                        }
+                    },
                     legend: {
                         position: 'top',
                         labels: {
-                            generateLabels: function(chart) {
-                                const data = chart.data;
-                                if (data.labels.length && data.datasets.length) {
-                                    const {labels, datasets} = data;
-                                    const isDarkMode = document.documentElement.classList.contains('dark');
-                                    const textColor = isDarkMode ? '#e2e8f0' : '#334155';
-                                    return labels.map((label, i) => {
-                                        const ds = datasets[0];
-                                        const value = ds.data[i];
-                                        const total = ds.data.reduce((a, b) => a + b, 0);
-                                        const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
-                                        return {
-                                            text: `${label} (${percentage}%)`,
-                                            fillStyle: ds.backgroundColor[i],
-                                            strokeStyle: ds.borderColor[i],
-                                            lineWidth: ds.borderWidth,
-                                            hidden: isNaN(ds.data[i]) || chart.getDatasetMeta(0).data[i].hidden,
-                                            index: i,
-                                            fontColor: textColor
-                                        };
-                                    });
-                                }
-                                return [];
-                            }
+                           color: document.documentElement.classList.contains('dark') ? '#e2e8f0' : '#334155'
                         }
                     },
                 },
                 onClick: (e) => {
                     const activePoints = charts[chartId].getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
                     if (activePoints.length) {
-                        const clickedLabel = charts[chartId].data.labels[activePoints[0].index];
+                        const clickedIndex = activePoints[0].index;
+                        const clickedLabel = charts[chartId].data.labels[clickedIndex];
                         let checkboxId;
                         if (feature === 'allInOne') checkboxId = 'filter-allinone';
                         if (feature === 'jogWheels') checkboxId = 'filter-jogwheels';
