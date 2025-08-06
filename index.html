@@ -158,20 +158,20 @@
                 <!-- Filters -->
                 <div class="space-y-6">
                     <!-- Manufacturer Filter -->
-                    <div class="filter-section">
+                    <div class="filter-section closed">
                         <div class="filter-section-toggle flex justify-between items-center">
                             <label for="manufacturer" class="font-semibold text-slate-700 dark:text-slate-300">Manufacturer</label>
                             <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span>
                         </div>
-                        <select id="manufacturer" class="mt-2 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 transition dark:text-white">
+                        <select id="manufacturer" class="hidden mt-2 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 transition dark:text-white">
                             <option value="all">All Manufacturers</option>
                         </select>
                     </div>
 
                     <!-- Year Release Filter -->
-                    <div class="filter-section">
+                    <div class="filter-section closed">
                         <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Year Released <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
-                        <div class="mt-2 space-y-4">
+                        <div class="hidden mt-2 space-y-4">
                              <div id="year-slider-container" class="space-y-2 pt-2">
                                 <div class="flex justify-between items-center text-sm">
                                     <label class="font-medium text-slate-600 dark:text-slate-400">Year</label>
@@ -188,9 +188,9 @@
                     </div>
 
                     <!-- Feature Filters -->
-                    <div class="filter-section">
+                    <div class="filter-section closed">
                         <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Features <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
-                        <div class="mt-2 space-y-4">
+                        <div class="hidden mt-2 space-y-4">
                             <div class="space-y-2">
                                 <label class="flex items-center space-x-2 cursor-pointer">
                                     <input type="checkbox" id="filter-allinone" class="feature-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700">
@@ -222,9 +222,9 @@
                     </div>
 
                     <!-- Sound Card Filter -->
-                    <div class="filter-section">
+                    <div class="filter-section closed">
                         <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Sound Card <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
-                        <div class="mt-2 space-y-2">
+                        <div class="hidden mt-2 space-y-2">
                             <label class="flex items-center space-x-2 cursor-pointer">
                                 <input type="checkbox" id="filter-soundcard" class="soundcard-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700">
                                 <span>Integrated Sound Card</span>
@@ -237,9 +237,9 @@
                     </div>
 
                     <!-- Support Level Filter -->
-                    <div class="filter-section">
+                    <div class="filter-section closed">
                          <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Support Level <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
-                        <div class="mt-2 space-y-2">
+                        <div class="hidden mt-2 space-y-2">
                             <label class="flex items-center space-x-2 cursor-pointer">
                                 <input type="checkbox" id="filter-certified" class="support-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700" value="Mixxx Certified">
                                 <span>Mixxx Certified</span>
@@ -252,9 +252,9 @@
                     </div>
 
                     <!-- Price Filter -->
-                    <div class="filter-section">
+                    <div class="filter-section closed">
                         <h3 class="filter-section-toggle font-semibold text-slate-700 dark:text-slate-300 flex justify-between items-center">Price Upon Release <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span></h3>
-                        <div class="mt-2 space-y-4">
+                        <div class="hidden mt-2 space-y-4">
                              <div id="msrp-slider-container" class="space-y-2 pt-2">
                                 <div class="flex justify-between items-center text-sm">
                                     <label class="font-medium text-slate-600 dark:text-slate-400">MSRP ($)</label>
@@ -271,12 +271,12 @@
                     </div>
                     
                     <!-- Sorting -->
-                    <div class="filter-section">
+                    <div class="filter-section closed">
                         <div class="filter-section-toggle flex justify-between items-center">
                            <label for="sort" class="font-semibold text-slate-700 dark:text-slate-300">Sort By</label>
                            <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span>
                         </div>
-                        <select id="sort" class="mt-2 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 transition dark:text-white">
+                        <select id="sort" class="hidden mt-2 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 transition dark:text-white">
                             <option value="manufacturer-asc">Manufacturer (A-Z)</option>
                             <option value="year-desc">Year of Release (Newest)</option>
                             <option value="year-asc">Year of Release (Oldest)</option>
@@ -326,6 +326,10 @@
                             <canvas id="yearChart"></canvas>
                         </div>
                     </div>
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-lg border border-slate-200 dark:border-slate-700 flex flex-col justify-center items-center">
+                        <h3 class="font-semibold text-center mb-2">Total Controllers</h3>
+                        <p id="total-controllers" class="text-6xl font-bold text-amber-600"></p>
+                    </div>
                     <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
                         <h3 class="font-semibold text-center mb-2">All-in-one Units</h3>
                         <div class="chart-container">
@@ -333,20 +337,16 @@
                         </div>
                     </div>
                     <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
-                        <h3 class="font-semibold text-center mb-2">Has Jog Wheel</h3>
+                        <h3 class="font-semibold text-center mb-2">Has Jog Wheels</h3>
                         <div class="chart-container">
                             <canvas id="jogWheelsChart"></canvas>
                         </div>
                     </div>
                     <div class="bg-white dark:bg-slate-800 p-4 rounded-lg border border-slate-200 dark:border-slate-700">
-                        <h3 class="font-semibold text-center mb-2">Has Sync Button</h3>
+                        <h3 class="font-semibold text-center mb-2">Has Sync Buttons</h3>
                         <div class="chart-container">
                             <canvas id="syncChart"></canvas>
                         </div>
-                    </div>
-                     <div class="bg-white dark:bg-slate-800 p-6 rounded-lg border border-slate-200 dark:border-slate-700 flex flex-col justify-center items-center">
-                        <h3 class="font-semibold text-center mb-2">Total Controllers</h3>
-                        <p id="total-controllers" class="text-6xl font-bold text-amber-600"></p>
                     </div>
                 </div>
             </section>
@@ -485,7 +485,7 @@
             { manufacturer: "Pioneer DJ", model: "DDJ-SX", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "664 x 357", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 999, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/110_Pioneer%20DJ_DDJ-SX.png?raw=true" },
             { manufacturer: "Reloop", model: "Beatmix 2", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "492 x 317", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/111_Reloop_Beatmix%202.png?raw=true" },
             { manufacturer: "Reloop", model: "Beatmix 4", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "558 x 317", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/112_Reloop_Beatmix%204.png?raw=true" },
-            { manufacturer: "Reloop", model: "Beatpad", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "460 x 325", jogWheels: "Yes", jogWheelDiameter: 155, msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/112_Reloop_Beatmix%204.png?raw=true" },
+            { manufacturer: "Reloop", model: "Beatpad", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "460 x 325", jogWheels: "Yes", jogWheelDiameter: 155, msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/113_Reloop_Beatpad.png?raw=true" },
             { manufacturer: "Reloop", model: "Digital Jockey 2 CE", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 349, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/114_Reloop_Digital%20Jockey%202%20CE.png?raw=true" },
             { manufacturer: "Reloop", model: "Digital Jockey 2 IE", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 449, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/115_Reloop_Digital%20Jockey%202%20IE.png?raw=true" },
             { manufacturer: "Reloop", model: "Digital Jockey 2 ME", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "370 x 295", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/116_Reloop_Digital%20Jockey%202%20ME.png?raw=true" },
@@ -557,12 +557,11 @@
             };
 
             const storedTheme = localStorage.getItem('theme');
-            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
+            
             if (storedTheme) {
                 applyTheme(storedTheme);
             } else {
-                applyTheme(systemPrefersDark ? 'dark' : 'light');
+                applyTheme('light'); // Default to light mode
             }
 
             themeToggles.forEach(toggle => {
