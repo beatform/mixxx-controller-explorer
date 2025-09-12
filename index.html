@@ -257,7 +257,7 @@
                         <div class="hidden mt-2 space-y-4">
                              <div id="msrp-slider-container" class="space-y-2 pt-2">
                                 <div class="flex justify-between items-center text-sm">
-                                    <label class="font-medium text-slate-600 dark:text-slate-400">MSRP ($)</label>
+                                    <label class="font-medium text-slate-600 dark:text-slate-400">MSRP ($USD)</label>
                                     <span id="msrp-range-display" class="font-mono text-slate-500 dark:text-slate-400"></span>
                                 </div>
                                 <div class="slider-container">
@@ -469,7 +469,8 @@
             { manufacturer: "Numark", model: "NS6II", supportLevel: "Community Supported", year: 2017, allInOne: "Yes", sync: "Yes", dimensions: "560 x 360", jogWheels: "Yes", jogWheelDiameter: 133, msrp: 799, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/94_Numark_NS6II.png?raw=true" },
             { manufacturer: "Numark", model: "NS7", supportLevel: "Community Supported", year: 2009, allInOne: "Yes", sync: "Yes", dimensions: "762 x 399", jogWheels: "Yes", jogWheelDiameter: 178, msrp: 1299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/95_Numark_NS7.png?raw=true" },
             { manufacturer: "Numark", model: "Omni Control", supportLevel: "Community Supported", year: 2008, allInOne: "Yes", sync: "Yes", dimensions: "356 x 267", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/96_Numark_Omni%20Control.png?raw=true" },
-            { manufacturer: "Numark", model: "Party Mix", supportLevel: "Community Supported", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "326 x 199", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 99, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/97_Numark_Party%20Mix.png?raw=true" },
+            { manufacturer: "Numark", model: "Party Mix", supportLevel: "Community Supported", year: 2016, allInOne: "Yes", sync: "Yes", dimensions: "326 x 199", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 99, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/139_Numark_Party%20Mix.png?raw=true" },
+            { manufacturer: "Numark", model: "Party Mix II", supportLevel: "Community Supported", year: 2021, allInOne: "Yes", sync: "Yes", dimensions: "326 x 199", jogWheels: "Yes", jogWheelDiameter: 100, msrp: 129, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/97_Numark_Party%20Mix_II.png?raw=true" },
             { manufacturer: "Numark", model: "Scratch", supportLevel: "Community Supported", year: 2018, allInOne: "No", sync: "No", dimensions: "242 x 308", jogWheels: "No", jogWheelDiameter: "-", msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/98_Numark_Scratch.png?raw=true" },
             { manufacturer: "Numark", model: "Total Control", supportLevel: "Community Supported", year: 2007, allInOne: "Yes", sync: "Yes", dimensions: "305 x 267", jogWheels: "Yes", jogWheelDiameter: 110, msrp: 199, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/99_Numark_Total%20Control.png?raw=true" },
             { manufacturer: "Numark", model: "V7", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "305 x 368", jogWheels: "Yes", jogWheelDiameter: 178, msrp: 599, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/100_Numark_V7.png?raw=true" },
@@ -969,8 +970,8 @@
             updateManufacturerChart(data);
             updateYearChart(data);
             updateFeatureChart(data, 'allInOneChart', 'allInOne', 'All-in-one');
-            updateFeatureChart(data, 'jogWheelsChart', 'jogWheels', 'Jog Wheels');
-            updateFeatureChart(data, 'syncChart', 'sync', 'Sync Button');
+            updateFeatureChart(data, 'jogWheelsChart', 'jogWheels', 'Has Jog Wheels');
+            updateFeatureChart(data, 'syncChart', 'sync', 'Has Sync Buttons');
         }
         
         function createChart(ctx, type, data, options) {
@@ -1131,3 +1132,4 @@
     </script>
 </body>
 </html>
+
