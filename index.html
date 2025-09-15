@@ -160,12 +160,12 @@
                     <!-- Manufacturer Filter -->
                     <div class="filter-section closed">
                         <div class="filter-section-toggle flex justify-between items-center">
-                            <label for="manufacturer" class="font-semibold text-slate-700 dark:text-slate-300">Manufacturer</label>
+                            <label class="font-semibold text-slate-700 dark:text-slate-300">Manufacturer</label>
                             <span class="arrow text-slate-500 dark:text-slate-400">&#9662;</span>
                         </div>
-                        <select id="manufacturer" class="hidden mt-2 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 transition dark:text-white">
-                            <option value="all">All Manufacturers</option>
-                        </select>
+                        <div id="manufacturer-filter-list" class="hidden mt-2 space-y-2 max-h-48 overflow-y-auto">
+                            <!-- Checkboxes will be dynamically inserted here -->
+                        </div>
                     </div>
 
                     <!-- Year Release Filter -->
@@ -384,6 +384,7 @@
             { manufacturer: "Behringer", model: "BCR2000", supportLevel: "Community Supported", year: 2006, allInOne: "No", sync: "No", dimensions: "300 x 210", jogWheels: "No", jogWheelDiameter: "-", msrp: 149, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/10_Behringer_BCR2000.png?raw=true" },
             { manufacturer: "Behringer", model: "CMD Micro", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "305 x 102", jogWheels: "Yes", jogWheelDiameter: 60, msrp: 69, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/11_Behringer_CMD%20Micro.png?raw=true" },
             { manufacturer: "Behringer", model: "CMD MM-1", supportLevel: "Community Supported", year: 2013, allInOne: "No", sync: "No", dimensions: "305 x 152", jogWheels: "No", jogWheelDiameter: "-", msrp: 99, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/12_Behringer_CMD%20MM-1.png?raw=true" },
+            { manufacturer: "Behringer", model: "CMD Studio 2A", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "264 x 211", jogWheels: "Yes", jogWheelDiameter: 75, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/140_Behringer_CMD_Studio_2A.png?raw=true" },
             { manufacturer: "Behringer", model: "CMD STUDIO 4a", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "502 x 308", jogWheels: "Yes", jogWheelDiameter: 152, msrp: 199, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/13_Behringer_CMD%20STUDIO%204a.png?raw=true" },
             { manufacturer: "Behringer", model: "DDM4000", supportLevel: "Community Supported", year: 2007, allInOne: "No", sync: "No", dimensions: "320 x 391", jogWheels: "No", jogWheelDiameter: "-", msrp: 349, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/14_Behringer_DDM4000.png?raw=true" },
             { manufacturer: "Denon DJ", model: "DN-HS5500", supportLevel: "Mixxx Certified", year: 2008, allInOne: "No", sync: "Yes", dimensions: "300 x 324", jogWheels: "Yes", jogWheelDiameter: 190, msrp: 999, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/15_Denon%20DJ_DN-HS5500.png?raw=true" },
@@ -477,13 +478,18 @@
             { manufacturer: "Pioneer DJ", model: "CDJ-2000", supportLevel: "Community Supported", year: 2009, allInOne: "No", sync: "Yes", dimensions: "320 x 406", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 1899, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/101_Pioneer%20DJ_CDJ-2000.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "CDJ-350", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "220 x 289", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/102_Pioneer%20DJ_CDJ-350.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "CDJ-850", supportLevel: "Community Supported", year: 2010, allInOne: "No", sync: "Yes", dimensions: "305 x 364", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 899, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/103_Pioneer%20DJ_CDJ-850.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-1000", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "708 x 361", jogWheels: "Yes", jogWheelDiameter: 206, msrp: 1299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/144_Pioneer%20DJ_DDJ-1000.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-800", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "632 x 334", jogWheels: "Yes", jogWheelDiameter: 153, msrp: 899, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/145_Pioneer%20DJ_DDJ-800.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "DDJ-200", supportLevel: "Community Supported", year: 2019, allInOne: "Yes", sync: "Yes", dimensions: "378 x 208", jogWheels: "Yes", jogWheelDiameter: 80, msrp: 149, hasSoundcard: "No", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/104_Pioneer%20DJ_DDJ-200.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "DDJ-400", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "482 x 272", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/105_Pioneer%20DJ_DDJ-400.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "DDJ-FLX4", supportLevel: "Community Supported", year: 2022, allInOne: "Yes", sync: "Yes", dimensions: "482 x 273", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/106_Pioneer%20DJ_DDJ-FLX4.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-RX", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "664 x 353", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 997, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/143_Pioneer%20DJ_DDJ-RX.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "DDJ-SB", supportLevel: "Community Supported", year: 2013, allInOne: "Yes", sync: "Yes", dimensions: "487 x 271", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/107_Pioneer%20DJ_DDJ-SB.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "DDJ-SB2", supportLevel: "Community Supported", year: 2015, allInOne: "Yes", sync: "Yes", dimensions: "487 x 271", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/108_Pioneer%20DJ_DDJ-SB2.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "DDJ-SB3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "483 x 272", jogWheels: "Yes", jogWheelDiameter: 128, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/108_Pioneer%20DJ_DDJ-SB2.png?raw=true" },
             { manufacturer: "Pioneer DJ", model: "DDJ-SX", supportLevel: "Community Supported", year: 2012, allInOne: "Yes", sync: "Yes", dimensions: "664 x 357", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 999, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/110_Pioneer%20DJ_DDJ-SX.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-SX2", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "664 x 353", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 988, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/141_Pioneer%20DJ_DDJ-SX2.png?raw=true" },
+            { manufacturer: "Pioneer DJ", model: "DDJ-SX3", supportLevel: "Community Supported", year: 2018, allInOne: "Yes", sync: "Yes", dimensions: "664 x 354", jogWheels: "Yes", jogWheelDiameter: 132, msrp: 999, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/142_Pioneer%20DJ_DDJ-SX3.png?raw=true" },
             { manufacturer: "Reloop", model: "Beatmix 2", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "492 x 317", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 249, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/111_Reloop_Beatmix%202.png?raw=true" },
             { manufacturer: "Reloop", model: "Beatmix 4", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "558 x 317", jogWheels: "Yes", jogWheelDiameter: 140, msrp: 299, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/112_Reloop_Beatmix%204.png?raw=true" },
             { manufacturer: "Reloop", model: "Beatpad", supportLevel: "Community Supported", year: 2014, allInOne: "Yes", sync: "Yes", dimensions: "460 x 325", jogWheels: "Yes", jogWheelDiameter: 155, msrp: 499, hasSoundcard: "Yes", linuxSupport: "Yes", imageUrl: "https://github.com/beatform/mixxx-controller-explorer/blob/main/images/113_Reloop_Beatpad.png?raw=true" },
@@ -618,7 +624,7 @@
 
         function setupEventListeners() {
             document.getElementById('search').addEventListener('input', applyFiltersAndRender);
-            document.getElementById('manufacturer').addEventListener('change', applyFiltersAndRender);
+            document.getElementById('manufacturer-filter-list').addEventListener('change', applyFiltersAndRender);
             document.getElementById('sort').addEventListener('change', applyFiltersAndRender);
             document.getElementById('reset-filters').addEventListener('click', resetFilters);
             document.querySelectorAll('.feature-filter, .support-filter, .soundcard-filter').forEach(el => {
@@ -762,21 +768,33 @@
         }
 
         function populateManufacturers() {
+            const container = document.getElementById('manufacturer-filter-list');
+            container.innerHTML = '';
             const manufacturers = [...new Set(data.map(c => c.manufacturer))].sort();
-            const select = document.getElementById('manufacturer');
             manufacturers.forEach(m => {
-                const option = document.createElement('option');
-                option.value = m;
-                option.textContent = m;
-                select.appendChild(option);
+                const label = document.createElement('label');
+                label.className = 'flex items-center space-x-2 cursor-pointer';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'manufacturer-filter h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-amber-600 focus:ring-amber-500 dark:bg-slate-700';
+                checkbox.value = m;
+
+                const span = document.createElement('span');
+                span.textContent = m;
+
+                label.appendChild(checkbox);
+                label.appendChild(span);
+                container.appendChild(label);
             });
         }
         
         function getFilters() {
             const supportFilters = Array.from(document.querySelectorAll('.support-filter:checked')).map(el => el.value);
+            const selectedManufacturers = Array.from(document.querySelectorAll('.manufacturer-filter:checked')).map(el => el.value);
             return {
                 search: document.getElementById('search').value.toLowerCase(),
-                manufacturer: document.getElementById('manufacturer').value,
+                manufacturers: selectedManufacturers.length > 0 ? selectedManufacturers : null,
                 sort: document.getElementById('sort').value,
                 allInOne: document.getElementById('filter-allinone').checked,
                 jogWheels: document.getElementById('filter-jogwheels').checked,
@@ -800,8 +818,8 @@
             if (filters.search) {
                 filteredData = filteredData.filter(c => c.model.toLowerCase().includes(filters.search));
             }
-            if (filters.manufacturer !== 'all') {
-                filteredData = filteredData.filter(c => c.manufacturer === filters.manufacturer);
+            if (filters.manufacturers) {
+                filteredData = filteredData.filter(c => filters.manufacturers.includes(c.manufacturer));
             }
             if (filters.allInOne) {
                 filteredData = filteredData.filter(c => c.allInOne === 'Yes');
@@ -937,7 +955,7 @@
         
         function resetFilters() {
             document.getElementById('search').value = '';
-            document.getElementById('manufacturer').value = 'all';
+            document.querySelectorAll('.manufacturer-filter').forEach(el => el.checked = false);
             document.getElementById('sort').value = 'manufacturer-asc';
             document.querySelectorAll('.feature-filter, .support-filter, .soundcard-filter').forEach(el => el.checked = false);
             
@@ -1020,8 +1038,11 @@
                     if (activePoints.length) {
                         const firstPoint = activePoints[0];
                         const label = charts.manufacturerChart.data.labels[firstPoint.index];
-                        document.getElementById('manufacturer').value = label;
-                        applyFiltersAndRender();
+                        const checkbox = document.querySelector(`.manufacturer-filter[value="${label}"]`);
+                        if (checkbox) {
+                            checkbox.checked = !checkbox.checked;
+                            applyFiltersAndRender();
+                        }
                     }
                 }
             });
