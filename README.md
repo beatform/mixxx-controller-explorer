@@ -2,46 +2,78 @@
 
 An interactive, single-page web application designed to explore, filter, and visualize the comprehensive list of DJ controllers compatible with the open-source Mixxx software.
 
-[Visit Explorer ↗](https://beatform.github.io/mixxx-controller-explorer/)
+[**Visit Mixxx Explorer Online ↗**](https://beatform.github.io/mixxx-controller-explorer/)
 
-## What The Project Does
+---
 
-This project transforms a static list of hardware into a dynamic, user-friendly dashboard. It allows users to instantly search, sort, and filter over 150 DJ controllers based on various criteria, helping them find the perfect hardware for their needs. The application also provides interactive charts for a high-level overview of the controller market.
+## Preview
 
-## Why The Project Is Useful
+![A screenshot of the Mixxx Controller Explorer dashboard showing charts and controller cards.](https://github.com/beatform/mixxx-controller-explorer/blob/main/images/explorer_preview.png?raw=true)
 
-For DJs considering the Mixxx platform, finding the right hardware can be a challenge. This tool simplifies the process by providing:
 
-* **Powerful Filtering:** Instantly narrow down the list by manufacturer, support level, and key features like jog wheel presence, sync buttons, or all-in-one design.
+---
 
-* **Visual Data Exploration:** Interactive charts show trends, such as which manufacturers are most popular and how many controllers are released each year.
+## About The Project
 
-* **Detailed Information:** Each controller is presented on a card with all relevant specifications in a clean, easy-to-read format.
+This project transforms a static list of hardware into a dynamic, user-friendly dashboard. It allows DJs to instantly search, sort, and filter a database of over 140 controllers, helping them find the right hardware for their needs when considering the Mixxx platform. The application also provides interactive charts for a high-level overview of the controller market.
 
-* **Advanced Search:** A dual-handle slider allows for precise filtering based on jog wheel diameter.
+---
 
+## Features
+
+* **Powerful Filtering:** Instantly narrow down the controller list by:
+    * Manufacturer (multi-select)
+    * Support Level (Mixxx Supported vs. Community Supported)
+    * Key Features (All-in-One Unit, Jog Wheels, Dedicated Sync Buttons)
+    * Sound Card (Integrated, Linux Compatible)
+* **Range Sliders:** Use dual-handle sliders for precise filtering by:
+    * Year of Release
+    * Jog Wheel Diameter (in mm)
+    * MSRP upon Release ($USD)
+* **Visual Data Exploration:** Interactive charts show trends, such as manufacturer market share and the number of controllers released each year.
+* **Detailed Information:** Each controller is presented on a clean card with all relevant specifications.
+* **External Mapping Links:** Direct links to the Mixxx Wiki or community forums for controller mapping files and discussions.
 * **Modern UI:** A clean, responsive interface with both light and dark modes for comfortable viewing.
+
+---
+
+## Tech Stack
+
+This is a self-contained, single-page application built with vanilla web technologies. No installation is required.
+
+* **HTML5**
+* **Tailwind CSS** for styling
+* **JavaScript** for interactivity and filtering logic
+* **Chart.js** for data visualisation
+
+---
 
 ## How to Get Started
 
-This project is a self-contained, single-page application. No installation is required.
+You can use the explorer online or run it locally.
 
-* **Download:** Get the index.html file from this repository.
+* **Online:** [**Visit Mixxx Explorer Online ↗**](https://beatform.github.io/mixxx-controller-explorer/)
+* **Local:**
+    1.  Download the `index.html` file from this repository.
+    2.  Open the file in any modern web browser (like Chrome, Firefox, or Safari).
 
-* **Open:** Open the index.html file in any modern web browser (like Chrome, Firefox, or Safari).
+---
 
-* **Explore:** Use the filters and interactive elements to explore the data.
+## Contributing
 
-Alternatively, [Visit Explorer ↗](https://beatform.github.io/mixxx-controller-explorer/)
+Contributions are welcome! If you'd like to help improve the project, please feel free to fork the repository and submit a pull request.
 
-## Where to Get Help
+* **Report a Bug:** If you encounter a bug or an error in the data, please [open an issue](https://github.com/beatform/mixxx-controller-explorer/issues).
+* **Suggest a Feature:** Have an idea for a new feature? Feel free to [open an issue](https://github.com/beatform/mixxx-controller-explorer/issues) to discuss it.
+* **Add or Update Data:** If you'd like to add a new controller or update existing information, please follow these steps:
+    1.  **Fork** this repository.
+    2.  Edit the `controllerData` array within the `<script>` tag of the `index.html` file.
+    3.  Submit a **pull request** with your changes for review.
 
-If you encounter a bug, have a question, or want to suggest a new feature, please open an issue on this repository.
+---
 
-## Who Maintains and Contributes
+## Acknowledgements
 
-This project is maintained by beatform.
-
-The initial code and structure were generated by Google's Gemini.
-
-Contributions are welcome! If you would like to help improve the project, please feel free to fork the repository and submit a pull request.
+* This project is maintained by [beatform](https://beatform.com/).
+* The initial code and structure were generated by Google's Gemini, and further developed using the Windsurf Code Editor.
+* Controller data is sourced from the official [Mixxx Hardware Compatibility page](https://manual.mixxx.org/2.5/en/chapters/hardware) and community forums.
